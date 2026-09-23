@@ -1,0 +1,1467 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula 7 - Aprende, practica y descubre</title>
+    <!-- Tailwind CSS desde CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            800: '#166534',
+                        },
+                        indigo: {
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .no-animations * {
+            animation: none !important;
+            transition: none !important;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.05);
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 3px;
+        }
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 0.8; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.03); }
+        }
+
+        .glow-effect {
+            animation: pulseGlow 3s infinite ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-100 min-h-screen flex flex-col antialiased selection:bg-indigo-500 selection:text-white">
+
+    <div id="toastContainer" class="fixed top-5 right-5 z-50 flex flex-col gap-3 pointer-events-none max-w-sm w-full px-4"></div>
+
+    <div id="loginScreen" class="fixed inset-0 z-40 bg-gradient-to-br from-indigo-900 via-slate-900 to-slate-950 flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-slate-800/90 backdrop-blur-md w-full max-w-md p-8 rounded-3xl shadow-2xl border border-slate-100 dark:border-slate-700/50">
+            <div class="text-center mb-8">
+                <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-indigo-600 text-white shadow-lg shadow-indigo-500/30 mb-4">
+                    <i data-lucide="graduation-cap" class="w-10 h-10"></i>
+                </div>
+                <h1 class="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">Aula 7</h1>
+                <p class="text-sm text-slate-500 dark:text-slate-400 mt-1 font-medium">Aprende, practica y descubre.</p>
+            </div>
+
+            <!-- Demostración Info Box -->
+            <div class="mb-6 p-3.5 bg-indigo-50 dark:bg-indigo-950/50 border border-indigo-100 dark:border-indigo-900/50 rounded-2xl flex items-start gap-3">
+                <i data-lucide="info" class="w-5 h-5 text-indigo-600 dark:text-indigo-400 shrink-0 mt-0.5"></i>
+                <div class="text-xs text-indigo-900 dark:text-indigo-200 leading-relaxed">
+                    <p class="font-semibold mb-0.5">Credenciales de Acceso Demo:</p>
+                    <p><span class="font-mono bg-indigo-100 dark:bg-indigo-900 px-1.5 py-0.5 rounded text-indigo-800 dark:text-indigo-300">Usuario: estudiante</span></p>
+                    <p class="mt-0.5"><span class="font-mono bg-indigo-100 dark:bg-indigo-900 px-1.5 py-0.5 rounded text-indigo-800 dark:text-indigo-300">Contraseña: 123456</span></p>
+                </div>
+            </div>
+
+            <form id="loginForm" class="space-y-4" onsubmit="handleLogin(event)">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider mb-1.5">Usuario</label>
+                    <div class="relative">
+                        <i data-lucide="user" class="w-5 h-5 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                        <input type="text" id="usernameInput" class="w-full pl-11 pr-4 py-3 rounded-xl border border-slate-200 dark:border-slate-600 dark:bg-slate-700/50 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition" placeholder="Ingresa tu usuario">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider mb-1.5">Contraseña</label>
+                    <div class="relative">
+                        <i data-lucide="lock" class="w-5 h-5 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                        <input type="password" id="passwordInput" class="w-full pl-11 pr-4 py-3 rounded-xl border border-slate-200 dark:border-slate-600 dark:bg-slate-700/50 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition" placeholder="••••••••">
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between pt-1">
+                    <label class="flex items-center cursor-pointer">
+                        <input type="checkbox" id="rememberMe" class="w-4 h-4 text-indigo-600 rounded border-slate-300 focus:ring-indigo-500 dark:bg-slate-700 dark:border-slate-600">
+                        <span class="ml-2 text-xs font-medium text-slate-600 dark:text-slate-400">Recordarme</span>
+                    </label>
+                </div>
+
+                <button type="submit" class="w-full py-3.5 px-4 bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white font-semibold rounded-xl shadow-lg shadow-indigo-600/30 hover:shadow-indigo-600/40 transition duration-200 flex items-center justify-center gap-2">
+                    <span>Iniciar sesión</span>
+                    <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div id="appLayout" class="hidden flex-1 flex flex-col md:flex-row min-h-screen">
+        
+        <!-- Overlay para móvil -->
+        <div id="mobileOverlay" onclick="toggleMobileMenu()" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-20 md:hidden hidden transition-opacity"></div>
+
+        <!-- Sidebar / Barra Lateral -->
+        <aside id="sidebar" class="fixed md:static inset-y-0 left-0 z-30 w-64 bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700/60 flex flex-col transition-transform duration-300 -translate-x-full md:translate-x-0">
+            <!-- Header Sidebar -->
+            <div class="p-5 border-b border-slate-100 dark:border-slate-700/50 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="p-2 bg-indigo-600 text-white rounded-xl shadow-md">
+                        <i data-lucide="graduation-cap" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <h2 class="font-extrabold text-slate-900 dark:text-white leading-none text-lg">Aula 7</h2>
+                        <span class="text-[10px] font-semibold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">Grado Séptimo</span>
+                    </div>
+                </div>
+                <button onclick="toggleMobileMenu()" class="md:hidden p-1.5 rounded-lg text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <!-- Navegación -->
+            <nav class="flex-1 p-4 space-y-1.5 custom-scrollbar overflow-y-auto">
+                <button onclick="navigateTo('dashboard')" id="nav-dashboard" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-sm text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50 transition">
+                    <i data-lucide="home" class="w-5 h-5"></i> Inicio
+                </button>
+                <button onclick="navigateTo('subjects')" id="nav-subjects" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-sm text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50 transition">
+                    <i data-lucide="book-open" class="w-5 h-5"></i> Mis materias
+                </button>
+                <button onclick="navigateTo('activities')" id="nav-activities" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-sm text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50 transition">
+                    <i data-lucide="file-text" class="w-5 h-5"></i> Actividades
+                </button>
+                <button onclick="navigateTo('progress')" id="nav-progress" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-sm text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50 transition">
+                    <i data-lucide="bar-chart-3" class="w-5 h-5"></i> Mi progreso
+                </button>
+                <button onclick="navigateTo('achievements')" id="nav-achievements" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-sm text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50 transition">
+                    <i data-lucide="award" class="w-5 h-5"></i> Logros
+                </button>
+                <button onclick="navigateTo('profile')" id="nav-profile" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-sm text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50 transition">
+                    <i data-lucide="user" class="w-5 h-5"></i> Perfil
+                </button>
+                <button onclick="navigateTo('settings')" id="nav-settings" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-sm text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/50 transition">
+                    <i data-lucide="settings" class="w-5 h-5"></i> Configuración
+                </button>
+            </nav>
+
+            <!-- Footer Sidebar -->
+            <div class="p-4 border-t border-slate-100 dark:border-slate-700/50">
+                <button onclick="handleLogout()" class="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 transition">
+                    <i data-lucide="log-out" class="w-5 h-5"></i> Cerrar sesión
+                </button>
+            </div>
+        </aside>
+
+        <!-- Contenido Principal -->
+        <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
+            
+            <!-- Header Superior -->
+            <header class="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700/60 sticky top-0 z-10 px-4 sm:px-6 py-3.5 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <button onclick="toggleMobileMenu()" class="md:hidden p-2 rounded-xl text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-700">
+                        <i data-lucide="menu" class="w-6 h-6"></i>
+                    </button>
+                    <h1 id="pageTitle" class="text-xl font-bold text-slate-800 dark:text-white">Inicio</h1>
+                </div>
+
+                <div class="flex items-center gap-2 sm:gap-4">
+                    <!-- Racha -->
+                    <div class="flex items-center gap-1.5 px-3 py-1.5 bg-orange-50 dark:bg-orange-950/40 border border-orange-200 dark:border-orange-800/50 rounded-xl text-orange-600 dark:text-orange-400 font-bold text-xs sm:text-sm" title="Racha de días de estudio">
+                        <i data-lucide="flame" class="w-4 h-4 fill-orange-500 stroke-orange-500"></i>
+                        <span id="headerStreak">0d</span>
+                    </div>
+
+                    <!-- Puntos -->
+                    <div class="flex items-center gap-1.5 px-3 py-1.5 bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800/50 rounded-xl text-amber-600 dark:text-amber-400 font-bold text-xs sm:text-sm" title="Puntos de experiencia acumulados">
+                        <i data-lucide="star" class="w-4 h-4 fill-amber-400 stroke-amber-500"></i>
+                        <span id="headerPoints">0 pts</span>
+                    </div>
+
+                    <!-- Botón Modo Oscuro -->
+                    <button onclick="toggleDarkMode()" class="p-2 rounded-xl text-slate-500 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-700 transition" title="Cambiar tema">
+                        <i data-lucide="moon" id="themeIcon" class="w-5 h-5"></i>
+                    </button>
+
+                    <!-- Avatar Estudiante -->
+                    <div onclick="navigateTo('profile')" class="flex items-center gap-2 cursor-pointer pl-2 border-l border-slate-200 dark:border-slate-700">
+                        <div id="headerAvatar" class="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-500 to-purple-500 text-white font-bold flex items-center justify-center text-sm shadow-sm">
+                            ED
+                        </div>
+                        <span class="hidden sm:inline-block font-semibold text-sm text-slate-700 dark:text-slate-200" id="headerStudentName">Estudiante</span>
+                    </div>
+                </div>
+            </header>
+
+            <main class="flex-1 p-4 sm:p-6 sm:px-8 overflow-y-auto custom-scrollbar">
+                
+                <!-- VISTA: DASHBOARD -->
+                <section id="view-dashboard" class="space-y-6 max-w-7xl mx-auto">
+                    <!-- Banner Saludo -->
+                    <div class="relative overflow-hidden bg-gradient-to-r from-indigo-600 to-purple-600 rounded-3xl p-6 sm:p-8 text-white shadow-xl">
+                        <div class="relative z-10">
+                            <span class="px-3 py-1 bg-white/20 backdrop-blur-md rounded-full text-xs font-semibold tracking-wider uppercase">Grado 7º - Periodo Activo</span>
+                            <h2 class="text-2xl sm:text-4xl font-extrabold mt-3 tracking-tight">¡Hola, <span id="dashStudentName">Estudiante</span>! 👋</h2>
+                            <p class="text-indigo-100 mt-2 max-w-xl text-sm sm:text-base">¿Listo para aprender hoy? Revisa tus tareas pendientes y sigue sumando puntos para subir de posición.</p>
+                            
+                            <div class="mt-6 flex flex-wrap gap-3">
+                                <button onclick="navigateTo('subjects')" class="px-5 py-2.5 bg-white text-indigo-600 font-bold rounded-xl hover:bg-indigo-50 transition shadow-md text-sm">
+                                    Explorar Materias
+                                </button>
+                                <button onclick="navigateTo('activities')" class="px-5 py-2.5 bg-indigo-700/60 hover:bg-indigo-700 text-white font-semibold rounded-xl border border-white/20 transition text-sm">
+                                    Ver Cuestionarios
+                                </button>
+                            </div>
+                        </div>
+                        <i data-lucide="sparkles" class="absolute right-4 -bottom-4 w-48 h-48 text-white/10 pointer-events-none"></i>
+                    </div>
+
+                    <!-- Métricas Principales -->
+                    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-100 dark:border-slate-700/60 shadow-sm flex items-center gap-4">
+                            <div class="p-3 bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400 rounded-2xl">
+                                <i data-lucide="pie-chart" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <span class="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase">Progreso Global</span>
+                                <p class="text-xl sm:text-2xl font-black text-slate-800 dark:text-white" id="dashGlobalProgress">0%</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-100 dark:border-slate-700/60 shadow-sm flex items-center gap-4">
+                            <div class="p-3 bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 rounded-2xl">
+                                <i data-lucide="check-circle-2" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <span class="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase">Completadas</span>
+                                <p class="text-xl sm:text-2xl font-black text-slate-800 dark:text-white" id="dashCompletedCount">0/0</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-100 dark:border-slate-700/60 shadow-sm flex items-center gap-4">
+                            <div class="p-3 bg-amber-50 dark:bg-amber-950/50 text-amber-600 dark:text-amber-400 rounded-2xl">
+                                <i data-lucide="trophy" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <span class="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase">Puntos Totales</span>
+                                <p class="text-xl sm:text-2xl font-black text-slate-800 dark:text-white" id="dashTotalPoints">0</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-100 dark:border-slate-700/60 shadow-sm flex items-center gap-4">
+                            <div class="p-3 bg-purple-50 dark:bg-purple-950/50 text-purple-600 dark:text-purple-400 rounded-2xl">
+                                <i data-lucide="award" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <span class="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase">Logros Obt.</span>
+                                <p class="text-xl sm:text-2xl font-black text-slate-800 dark:text-white" id="dashAchievementsCount">0/6</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Materias Destacadas & Tareas Pendientes -->
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <div class="lg:col-span-2 space-y-4">
+                            <div class="flex items-center justify-between">
+                                <h3 class="font-bold text-slate-800 dark:text-white text-lg">Tus Materias</h3>
+                                <button onclick="navigateTo('subjects')" class="text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:underline">Ver todas</button>
+                            </div>
+                            <div id="dashSubjectsGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <!-- Se renderiza dinámicamente -->
+                            </div>
+                        </div>
+
+                        <!-- Panel Lateral: Actividades Recomendadas / Logros Recientes -->
+                        <div class="space-y-6">
+                            <div class="bg-white dark:bg-slate-800 p-5 rounded-3xl border border-slate-100 dark:border-slate-700/60 shadow-sm space-y-4">
+                                <h3 class="font-bold text-slate-800 dark:text-white flex items-center gap-2">
+                                    <i data-lucide="target" class="w-5 h-5 text-indigo-600"></i> Actividades sugeridas
+                                </h3>
+                                <div id="dashPendingActivities" class="space-y-3">
+                                    <!-- Render dinámico -->
+                                </div>
+                            </div>
+
+                            <div class="bg-white dark:bg-slate-800 p-5 rounded-3xl border border-slate-100 dark:border-slate-700/60 shadow-sm space-y-4">
+                                <h3 class="font-bold text-slate-800 dark:text-white flex items-center gap-2">
+                                    <i data-lucide="star" class="w-5 h-5 text-amber-500"></i> Logros Desbloqueados
+                                </h3>
+                                <div id="dashRecentBadges" class="flex flex-wrap gap-2">
+                                    <!-- Render dinámico -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- VISTA: MIS MATERIAS -->
+                <section id="view-subjects" class="hidden space-y-6 max-w-7xl mx-auto">
+                    <div>
+                        <h2 class="text-2xl font-bold text-slate-900 dark:text-white">Materias de Séptimo Grado</h2>
+                        <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Selecciona una materia para explorar su plan de estudios y poner a prueba tus conocimientos.</p>
+                    </div>
+                    <div id="subjectsFullGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Render dinámico de las 7 materias -->
+                    </div>
+                </section>
+
+                <!-- VISTA: DETALLE DE MATERIA -->
+                <section id="view-subject-detail" class="hidden space-y-6 max-w-5xl mx-auto">
+                    <button onclick="navigateTo('subjects')" class="inline-flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white transition">
+                        <i data-lucide="arrow-left" class="w-4 h-4"></i> Volver a materias
+                    </button>
+
+                    <div id="subjectDetailHeader" class="bg-white dark:bg-slate-800 p-6 sm:p-8 rounded-3xl border border-slate-100 dark:border-slate-700/60 shadow-sm">
+                        <!-- Carga dinámica -->
+                    </div>
+
+                    <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-100 dark:border-slate-700/60 shadow-sm">
+                        <h3 class="font-bold text-lg text-slate-900 dark:text-white mb-4">Módulos de Aprendizaje</h3>
+                        <div id="subjectModulesList" class="space-y-3">
+                            <!-- Lista dinámica de módulos -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- VISTA: ACTIVIDADES & QUIZ -->
+                <section id="view-activities" class="hidden space-y-6 max-w-7xl mx-auto">
+                    <div>
+                        <h2 class="text-2xl font-bold text-slate-900 dark:text-white">Cuestionarios Evaluativos</h2>
+                        <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Completa los cuestionarios de cada materia para ganar puntos y desbloquear medallas.</p>
+                    </div>
+
+                    <div id="activitiesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Carga dinámica de los cuestionarios -->
+                    </div>
+                </section>
+
+                <!-- VISTA: CUESTIONARIO EN CURSO (MODAL / INTERFAZ DE QUIZ) -->
+                <section id="view-quiz" class="hidden max-w-3xl mx-auto space-y-6">
+                    <div class="flex items-center justify-between">
+                        <button onclick="confirmExitQuiz()" class="text-xs font-bold text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white flex items-center gap-1.5">
+                            <i data-lucide="x" class="w-4 h-4"></i> Salir de la prueba
+                        </button>
+                        <span id="quizSubjectBadge" class="px-3 py-1 bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 rounded-full font-bold text-xs">Materia</span>
+                    </div>
+
+                    <!-- Progreso Cuestionario -->
+                    <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-100 dark:border-slate-700/60 shadow-sm space-y-2">
+                        <div class="flex justify-between text-xs font-bold text-slate-500 dark:text-slate-400">
+                            <span>Pregunta <span id="quizCurrentIndex">1</span> de <span id="quizTotalIndex">5</span></span>
+                            <span id="quizScoreTracker">Puntos: 0</span>
+                        </div>
+                        <div class="w-full bg-slate-100 dark:bg-slate-700 h-2.5 rounded-full overflow-hidden">
+                            <div id="quizProgressBar" class="bg-indigo-600 h-full transition-all duration-300 w-0"></div>
+                        </div>
+                    </div>
+
+                    <!-- Tarjeta de Pregunta -->
+                    <div id="quizQuestionCard" class="bg-white dark:bg-slate-800 p-6 sm:p-8 rounded-3xl border border-slate-100 dark:border-slate-700/60 shadow-sm space-y-6">
+                        <h3 id="quizQuestionText" class="text-lg sm:text-xl font-bold text-slate-900 dark:text-white leading-relaxed">¿Pregunta?</h3>
+
+                        <div id="quizOptionsContainer" class="space-y-3">
+                            <!-- Opciones renderizadas dinámicamente -->
+                        </div>
+
+                        <!-- Feedback Explicativo -->
+                        <div id="quizFeedbackBox" class="hidden p-4 rounded-2xl space-y-2 border">
+                            <div class="flex items-center gap-2 font-bold text-sm" id="quizFeedbackHeader">
+                                <!-- Ícono + Resultado -->
+                            </div>
+                            <p id="quizFeedbackBody" class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed"></p>
+                        </div>
+
+                        <!-- Botón Siguiente -->
+                        <div class="flex justify-end">
+                            <button id="quizNextBtn" onclick="nextQuestion()" disabled class="px-6 py-3 bg-indigo-600 opacity-50 cursor-not-allowed hover:bg-indigo-700 text-white font-bold rounded-xl transition flex items-center gap-2">
+                                <span>Siguiente</span>
+                                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- VISTA: RESULTADOS DEL QUIZ -->
+                <section id="view-quiz-results" class="hidden max-w-xl mx-auto text-center space-y-6 py-8">
+                    <div class="bg-white dark:bg-slate-800 p-8 rounded-3xl border border-slate-100 dark:border-slate-700/60 shadow-xl space-y-6">
+                        <div class="inline-flex p-4 rounded-full bg-amber-100 dark:bg-amber-950/60 text-amber-500 shadow-inner">
+                            <i data-lucide="trophy" class="w-16 h-16"></i>
+                        </div>
+
+                        <div>
+                            <h2 class="text-2xl font-black text-slate-900 dark:text-white">¡Cuestionario Completado!</h2>
+                            <p class="text-sm text-slate-500 dark:text-slate-400 mt-1" id="quizResultsSub">Has demostrado un gran avance en tu aprendizaje.</p>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4 bg-slate-50 dark:bg-slate-900/50 p-4 rounded-2xl border border-slate-100 dark:border-slate-800">
+                            <div>
+                                <span class="text-xs font-semibold text-slate-400 uppercase">Puntuación</span>
+                                <p class="text-2xl font-black text-indigo-600 dark:text-indigo-400" id="resScore">0%</p>
+                            </div>
+                            <div>
+                                <span class="text-xs font-semibold text-slate-400 uppercase">Puntos Ganados</span>
+                                <p class="text-2xl font-black text-amber-500" id="resPoints">+0 pts</p>
+                            </div>
+                        </div>
+
+                        <div id="resBadgeUnlocked" class="hidden p-3 bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800 rounded-2xl text-emerald-700 dark:text-emerald-300 text-xs font-semibold flex items-center justify-center gap-2">
+                            <i data-lucide="award" class="w-5 h-5"></i> ¡Haz desbloqueado un nuevo logro!
+                        </div>
+
+                        <div class="flex gap-3 justify-center">
+                            <button onclick="navigateTo('activities')" class="px-6 py-3 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 font-bold rounded-xl hover:bg-slate-200 dark:hover:bg-slate-600 transition text-sm">
+                                Volver a actividades
+                            </button>
+                            <button onclick="navigateTo('subjects')" class="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl transition text-sm">
+                                Ver materias
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- VISTA: MI PROGRESO DETALLADO -->
+                <section id="view-progress" class="hidden space-y-6 max-w-7xl mx-auto">
+                    <div>
+                        <h2 class="text-2xl font-bold text-slate-900 dark:text-white">Estadísticas de Rendimiento</h2>
+                        <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Sigue de cerca tu avance porcentual en cada asignatura.</p>
+                    </div>
+
+                    <!-- Resumen General -->
+                    <div class="bg-white dark:bg-slate-800 p-6 sm:p-8 rounded-3xl border border-slate-100 dark:border-slate-700/60 shadow-sm space-y-6">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                            <div>
+                                <span class="text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">Promedio Global</span>
+                                <h3 class="text-3xl font-black text-slate-900 dark:text-white mt-1" id="progGlobalText">0%</h3>
+                            </div>
+                            <div class="flex gap-6 text-sm">
+                                <div>
+                                    <span class="block text-slate-400 text-xs font-semibold">Total Cuestionarios</span>
+                                    <span class="font-bold text-slate-700 dark:text-slate-200" id="progTotalQuizzes">0</span>
+                                </div>
+                                <div>
+                                    <span class="block text-slate-400 text-xs font-semibold">Aprobados</span>
+                                    <span class="font-bold text-emerald-600 dark:text-emerald-400" id="progPassedQuizzes">0</span>
+                                </div>
+                                <div>
+                                    <span class="block text-slate-400 text-xs font-semibold">Promedio Puntos</span>
+                                    <span class="font-bold text-amber-500" id="progAvgPoints">0</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Barra visual global -->
+                        <div class="space-y-1">
+                            <div class="w-full bg-slate-100 dark:bg-slate-700 h-4 rounded-full overflow-hidden">
+                                <div id="progGlobalBar" class="bg-gradient-to-r from-indigo-500 to-emerald-500 h-full transition-all duration-500 w-0"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Desglose por materia -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="progressSubjectsGrid">
+                        <!-- Carga dinámica -->
+                    </div>
+                </section>
+
+                <!-- VISTA: LOGROS / INSIGNIAS -->
+                <section id="view-achievements" class="hidden space-y-6 max-w-7xl mx-auto">
+                    <div>
+                        <h2 class="text-2xl font-bold text-slate-900 dark:text-white">Sistema de Medallas y Insignias</h2>
+                        <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Completa desafíos académicos para coleccionar todas las insignias de Aula 7.</p>
+                    </div>
+
+                    <div id="achievementsListGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Carga dinámica de las insignias -->
+                    </div>
+                </section>
+
+                <!-- VISTA: PERFIL DEL ESTUDIANTE -->
+                <section id="view-profile" class="hidden space-y-6 max-w-4xl mx-auto">
+                    <div class="bg-white dark:bg-slate-800 p-6 sm:p-8 rounded-3xl border border-slate-100 dark:border-slate-700/60 shadow-sm relative overflow-hidden">
+                        <div class="flex flex-col sm:flex-row items-center gap-6 relative z-10">
+                            <div id="profileBigAvatar" class="w-24 h-24 rounded-3xl bg-gradient-to-tr from-indigo-500 to-purple-600 text-white font-extrabold text-3xl flex items-center justify-center shadow-lg shadow-indigo-500/30">
+                                ED
+                            </div>
+                            <div class="text-center sm:text-left space-y-1">
+                                <span class="px-2.5 py-0.5 bg-indigo-50 dark:bg-indigo-950/80 text-indigo-600 dark:text-indigo-400 rounded-full font-bold text-xs uppercase">Estudiante Activo</span>
+                                <h2 class="text-2xl font-extrabold text-slate-900 dark:text-white" id="profileName">Estudiante Demo</h2>
+                                <p class="text-sm text-slate-500 dark:text-slate-400">Grado Séptimo - Colegio Aula 7</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Personalizar Apodo -->
+                    <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-100 dark:border-slate-700/60 shadow-sm space-y-4">
+                        <h3 class="font-bold text-slate-900 dark:text-white text-base">Personalizar Apodo / Nombre</h3>
+                        <div class="flex gap-3">
+                            <input type="text" id="nicknameInput" class="flex-1 px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 dark:bg-slate-900 dark:text-white text-sm outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Escribe tu apodo...">
+                            <button onclick="updateNickname()" class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl text-sm transition">
+                                Guardar
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Estadísticas Rápidas -->
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                        <div class="p-4 bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700/60 text-center">
+                            <span class="block text-xs text-slate-400 font-semibold uppercase">Nivel</span>
+                            <span class="text-xl font-bold text-indigo-600 dark:text-indigo-400" id="profileLevel">Nivel 1</span>
+                        </div>
+                        <div class="p-4 bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700/60 text-center">
+                            <span class="block text-xs text-slate-400 font-semibold uppercase">Puntos</span>
+                            <span class="text-xl font-bold text-amber-500" id="profilePoints">0</span>
+                        </div>
+                        <div class="p-4 bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700/60 text-center">
+                            <span class="block text-xs text-slate-400 font-semibold uppercase">Racha</span>
+                            <span class="text-xl font-bold text-orange-500" id="profileStreak">0 días</span>
+                        </div>
+                        <div class="p-4 bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700/60 text-center">
+                            <span class="block text-xs text-slate-400 font-semibold uppercase">Logros</span>
+                            <span class="text-xl font-bold text-purple-500" id="profileBadges">0/6</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- VISTA: CONFIGURACIÓN -->
+                <section id="view-settings" class="hidden space-y-6 max-w-4xl mx-auto">
+                    <div>
+                        <h2 class="text-2xl font-bold text-slate-900 dark:text-white">Ajustes de la Plataforma</h2>
+                        <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Configura tus preferencias visuales e interactivas.</p>
+                    </div>
+
+                    <div class="bg-white dark:bg-slate-800 rounded-3xl border border-slate-100 dark:border-slate-700/60 shadow-sm divide-y divide-slate-100 dark:divide-slate-700/60">
+                        <!-- Opción: Modo Oscuro -->
+                        <div class="p-5 sm:p-6 flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <div class="p-2.5 bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 rounded-xl">
+                                    <i data-lucide="moon" class="w-5 h-5"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-sm text-slate-900 dark:text-white">Modo Oscuro</h4>
+                                    <p class="text-xs text-slate-500 dark:text-slate-400">Alterna entre colores claros y tema nocturno</p>
+                                </div>
+                            </div>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" id="settingsDarkModeToggle" onchange="toggleDarkMode()" class="sr-only peer">
+                                <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-slate-600 peer-checked:bg-indigo-600"></div>
+                            </label>
+                        </div>
+
+                        <!-- Opción: Animaciones -->
+                        <div class="p-5 sm:p-6 flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <div class="p-2.5 bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 rounded-xl">
+                                    <i data-lucide="zap" class="w-5 h-5"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-sm text-slate-900 dark:text-white">Efectos Visuales y Animaciones</h4>
+                                    <p class="text-xs text-slate-500 dark:text-slate-400">Activa o desactiva las transiciones animadas</p>
+                                </div>
+                            </div>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" id="settingsAnimationsToggle" onchange="toggleAnimations()" class="sr-only peer" checked>
+                                <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-slate-600 peer-checked:bg-indigo-600"></div>
+                            </label>
+                        </div>
+
+                        <!-- Opción: Restablecer -->
+                        <div class="p-5 sm:p-6 flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <div class="p-2.5 bg-red-50 dark:bg-red-950/60 text-red-600 dark:text-red-400 rounded-xl">
+                                    <i data-lucide="rotate-ccw" class="w-5 h-5"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-sm text-slate-900 dark:text-white">Restablecer Progreso</h4>
+                                    <p class="text-xs text-slate-500 dark:text-slate-400">Reinicia todos tus cuestionarios, puntos y logros a cero</p>
+                                </div>
+                            </div>
+                            <button onclick="openResetModal()" class="px-4 py-2 bg-red-100 hover:bg-red-200 dark:bg-red-900/40 dark:hover:bg-red-900/60 text-red-700 dark:text-red-300 font-bold rounded-xl text-xs transition">
+                                Restablecer
+                            </button>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <div id="resetModal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+        <div class="bg-white dark:bg-slate-800 rounded-3xl max-w-sm w-full p-6 text-center space-y-4 shadow-2xl border border-slate-100 dark:border-slate-700">
+            <div class="w-12 h-12 bg-red-100 dark:bg-red-950/60 text-red-600 rounded-2xl flex items-center justify-center mx-auto">
+                <i data-lucide="alert-triangle" class="w-6 h-6"></i>
+            </div>
+            <h3 class="font-bold text-lg text-slate-900 dark:text-white">¿Restablecer todo el progreso?</h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400">Esta acción no se puede deshacer. Perderás tus puntos acumulados, racha y logros desbloqueados.</p>
+            <div class="flex gap-3 pt-2">
+                <button onclick="closeResetModal()" class="flex-1 py-2.5 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 text-slate-700 dark:text-slate-200 font-bold rounded-xl text-xs transition">
+                    Cancelar
+                </button>
+                <button onclick="confirmResetProgress()" class="flex-1 py-2.5 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl text-xs transition">
+                    Sí, reiniciar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /* BASE DE DATOS LOCAL DE MATERIAS Y CUESTIONARIOS DE GRADO SÉPTIMO */
+        const SUBJECTS_DATA = [
+            {
+                id: 'math',
+                name: 'Matemáticas',
+                icon: 'calculator',
+                color: 'blue',
+                description: 'Aprende sobre números enteros, proporciones, álgebra y geometría.',
+                topics: ['Números enteros', 'Fracciones', 'Proporcionalidad', 'Álgebra', 'Geometría', 'Estadística'],
+                questions: [
+                    {
+                        question: '¿Cuál es el resultado de la siguiente operación con enteros: (-8) + 15?',
+                        options: ['-23', '7', '-7', '23'],
+                        correct: 1,
+                        explanation: 'Al sumar números con signos diferentes, se restan sus valores absolutos (15 - 8 = 7) y se conserva el signo del mayor en valor absoluto (+).'
+                    },
+                    {
+                        question: 'Si 5 cuadernos cuestan $15.000, ¿cuánto costarán 8 cuadernos iguales?',
+                        options: ['$20.000', '$22.000', '$24.000', '$28.000'],
+                        correct: 2,
+                        explanation: 'Aplicando la regla de tres simple directa: Cada cuaderno cuesta $15.000 / 5 = $3.000. Por lo tanto, 8 cuadernos valen 8 × $3.000 = $24.000.'
+                    },
+                    {
+                        question: '¿Cuál es el área de un triángulo con base 10 cm y altura 6 cm?',
+                        options: ['60 cm²', '30 cm²', '16 cm²', '40 cm²'],
+                        correct: 1,
+                        explanation: 'La fórmula del área de un triángulo es (Base × Altura) / 2. Así: (10 × 6) / 2 = 60 / 2 = 30 cm².'
+                    }
+                ]
+            },
+            {
+                id: 'spanish',
+                name: 'Lengua Castellana',
+                icon: 'book-open',
+                color: 'emerald',
+                description: 'Mejora tu gramática, ortografía y nivel de comprensión lectora.',
+                topics: ['Comprensión lectora', 'Gramática', 'Ortografía', 'Literatura', 'Tipos de texto'],
+                questions: [
+                    {
+                        question: '¿Cuál de las siguientes palabras es un sustantivo abstracto?',
+                        options: ['Mesa', 'Justicia', 'Montaña', 'Lápiz'],
+                        correct: 1,
+                        explanation: 'Los sustantivos abstractos nombran ideas, valores o sentimientos que no se pueden percibir directamente por los sentidos físicos, como la "Justicia".'
+                    },
+                    {
+                        question: '¿Qué tipo de texto tiene como propósito principal relatar acontecimientos reales o imaginarios?',
+                        options: ['Texto Instructivo', 'Texto Narrativo', 'Texto Expositivo', 'Texto Argumentativo'],
+                        correct: 1,
+                        explanation: 'El texto narrativo relata una secuencia de hechos desarrollados en un tiempo y espacio determinado.'
+                    }
+                ]
+            },
+            {
+                id: 'science',
+                name: 'Ciencias Naturales',
+                icon: 'microscope',
+                color: 'purple',
+                description: 'Explora la estructura de las células, energía, ecosistemas y cuerpo humano.',
+                topics: ['La célula', 'Ecosistemas', 'Materia', 'Energía', 'Cuerpo humano'],
+                questions: [
+                    {
+                        question: '¿Cuál es la función principal de la mitocondria en la célula eucariota?',
+                        options: ['Sintetizar proteínas', 'Generar la energía celular (ATP)', 'Almacenar agua', 'Proteger el ADN'],
+                        correct: 1,
+                        explanation: 'La mitocondria es el organelo encargado de la respiración celular y la obtención de energía en forma de ATP.'
+                    },
+                    {
+                        question: '¿Cómo se le denomina al paso del estado sólido al estado líquido de la materia?',
+                        options: ['Evaporación', 'Fusión', 'Condensación', 'Solidificación'],
+                        correct: 1,
+                        explanation: 'La fusión es el proceso físico mediante el cual un cuerpo en estado sólido pasa al estado líquido por aumento de temperatura.'
+                    }
+                ]
+            },
+            {
+                id: 'socials',
+                name: 'Ciencias Sociales',
+                icon: 'globe',
+                color: 'amber',
+                description: 'Estudia las civilizaciones antiguas, geografía física y organización social.',
+                topics: ['Geografía', 'Historia', 'Civilizaciones', 'Sociedad', 'Economía'],
+                questions: [
+                    {
+                        question: '¿Qué gran imperio de la antigüedad construyó el Coliseo y expandió su dominio por el Mediterráneo?',
+                        options: ['Imperio Griego', 'Imperio Romano', 'Imperio Egipcio', 'Imperio Maya'],
+                        correct: 1,
+                        explanation: 'El Imperio Romano dominó la cuenca del Mediterráneo y dejó monumentos icónicos como el Coliseo Romano.'
+                    }
+                ]
+            },
+            {
+                id: 'english',
+                name: 'Inglés',
+                icon: 'languages',
+                color: 'rose',
+                description: 'Fortalece tu vocabulario y tiempos gramaticales como Present Simple y Past Simple.',
+                topics: ['Present Simple', 'Past Simple', 'Vocabulary', 'Reading', 'Grammar'],
+                questions: [
+                    {
+                        question: 'Choose the correct sentence in Present Simple:',
+                        options: ['She write a letter.', 'She writes a letter.', 'She writing a letter.', 'She written a letter.'],
+                        correct: 1,
+                        explanation: 'In Present Simple with third-person singular (She/He/It), we add an "s" or "es" to the main verb: "writes".'
+                    }
+                ]
+            },
+            {
+                id: 'tech',
+                name: 'Tecnología e Informática',
+                icon: 'laptop',
+                color: 'cyan',
+                description: 'Conoce sobre seguridad digital, fundamentos de hardware, software y algoritmos.',
+                topics: ['Hardware', 'Software', 'Internet', 'Seguridad digital', 'Algoritmos'],
+                questions: [
+                    {
+                        question: '¿Cuál de los siguientes elementos corresponde a un dispositivo de entrada de Hardware?',
+                        options: ['Monitor', 'Impresora', 'Teclado', 'Altavoz'],
+                        correct: 2,
+                        explanation: 'El teclado es un dispositivo de entrada porque permite introducir datos e instrucciones al computador.'
+                    }
+                ]
+            },
+            {
+                id: 'arts',
+                name: 'Educación Artística',
+                icon: 'palette',
+                color: 'indigo',
+                description: 'Aprende la teoría del color, principios de composición y expresión cultural.',
+                topics: ['Color', 'Dibujo', 'Composición', 'Arte y cultura'],
+                questions: [
+                    {
+                        question: '¿Cuáles son los tres colores primarios en el modelo de color pigmento tradicional?',
+                        options: ['Verde, Naranja y Violeta', 'Amarillo, Azul y Rojo', 'Negro, Blanco y Gris', 'Cyan, Magenta y Amarillo'],
+                        correct: 1,
+                        explanation: 'Los colores primarios tradicionales son el Amarillo, el Azul y el Rojo, ya que no se pueden obtener mediante la mezcla de otros.'
+                    }
+                ]
+            }
+        ];
+
+        /* CATÁLOGO DE LOGROS / INSIGNIAS */
+        const ACHIEVEMENTS_DATA = [
+            { id: 'first_quiz', name: 'Primera actividad', icon: 'sparkles', desc: 'Completa tu primer cuestionario evaluativo.' },
+            { id: 'quiz_5', name: 'Estudiante Constante', icon: 'book-open', desc: 'Resuelve exitosamente 5 cuestionarios.' },
+            { id: 'math_master', name: 'Maestro de Matemáticas', icon: 'calculator', desc: 'Obtén puntaje perfecto en el quiz de Matemáticas.' },
+            { id: 'science_explorer', name: 'Explorador Científico', icon: 'microscope', desc: 'Completa las actividades de Ciencias Naturales.' },
+            { id: 'streak_7', name: 'Racha Imparable', icon: 'flame', desc: 'Mantén una racha de estudio activa.' },
+            { id: 'perfectionist', name: 'Perfeccionista', icon: 'award', desc: 'Obtén 100% de calificación en cualquier prueba.' }
+        ];
+
+        /* ESTADO DE LA APLICACIÓN (STATE) CON PERSISTENCIA */
+        let state = {
+            user: null,
+            remember: false,
+            points: 0,
+            streak: 1,
+            completedQuizzes: {}, // { subjectId: scorePercentage }
+            unlockedBadges: [],
+            settings: {
+                darkMode: false,
+                animations: true
+            }
+        };
+
+        /* ESTADO DEL QUIZ EN CURSO */
+        let activeQuiz = {
+            subjectId: null,
+            questions: [],
+            currentIndex: 0,
+            scorePoints: 0,
+            correctCount: 0,
+            selectedAnswer: null
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadState();
+            initTheme();
+            renderSubjects();
+            renderActivities();
+            renderAchievements();
+
+            if (state.user) {
+                showAppLayout();
+            } else {
+                showLoginScreen();
+            }
+
+            // Inicializar iconos de Lucide
+            lucide.createIcons();
+        });
+
+        /* MANEJO DE STORAGE LOCAL */
+        function loadState() {
+            const saved = localStorage.getItem('aula7_state');
+            if (saved) {
+                try {
+                    state = { ...state, ...JSON.parse(saved) };
+                } catch(e) { console.error("Error al cargar estado:", e); }
+            }
+        }
+
+        function saveState() {
+            localStorage.setItem('aula7_state', JSON.stringify(state));
+            updateUIHeaderAndMetrics();
+        }
+
+        /* MANEJO DE AUTENTICACIÓN DEMO */
+        function handleLogin(e) {
+            e.preventDefault();
+            const userInput = document.getElementById('usernameInput').value.trim();
+            const passInput = document.getElementById('passwordInput').value.trim();
+            const remember = document.getElementById('rememberMe').checked;
+
+            if (!userInput || !passInput) {
+                showToast('Por favor completa todos los campos', 'error');
+                return;
+            }
+
+            if (userInput.toLowerCase() === 'estudiante' && passInput === '123456') {
+                state.user = { name: 'Estudiante Demo', username: userInput };
+                state.remember = remember;
+                saveState();
+                showAppLayout();
+                showToast('¡Bienvenido de nuevo a Aula 7!', 'success');
+            } else {
+                showToast('Credenciales incorrectas. Revisa los datos demo.', 'error');
+            }
+        }
+
+        function handleLogout() {
+            state.user = null;
+            if (!state.remember) {
+                localStorage.removeItem('aula7_state');
+            } else {
+                saveState();
+            }
+            showLoginScreen();
+            showToast('Sesión cerrada correctamente', 'info');
+        }
+
+        function showLoginScreen() {
+            document.getElementById('loginScreen').classList.remove('hidden');
+            document.getElementById('appLayout').classList.add('hidden');
+        }
+
+        function showAppLayout() {
+            document.getElementById('loginScreen').classList.add('hidden');
+            document.getElementById('appLayout').classList.remove('hidden');
+            updateUIHeaderAndMetrics();
+            navigateTo('dashboard');
+        }
+
+        function navigateTo(viewId, param = null) {
+            // Ocultar todas las secciones
+            const views = ['dashboard', 'subjects', 'subject-detail', 'activities', 'quiz', 'quiz-results', 'progress', 'achievements', 'profile', 'settings'];
+            views.forEach(v => {
+                const el = document.getElementById(`view-${v}`);
+                if (el) el.classList.add('hidden');
+            });
+
+            // Remover clase activa de los botones de navegación
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('bg-indigo-50', 'text-indigo-600', 'dark:bg-indigo-950/60', 'dark:text-indigo-400');
+            });
+
+            // Activar botón correspondiente
+            const activeNavBtn = document.getElementById(`nav-${viewId}`);
+            if (activeNavBtn) {
+                activeNavBtn.classList.add('bg-indigo-50', 'text-indigo-600', 'dark:bg-indigo-950/60', 'dark:text-indigo-400');
+            }
+
+            // Mostrar la vista seleccionada
+            const targetView = document.getElementById(`view-${viewId}`);
+            if (targetView) targetView.classList.remove('hidden');
+
+            // Actualizar título en Header
+            const titleMap = {
+                'dashboard': 'Inicio',
+                'subjects': 'Mis Materias',
+                'subject-detail': 'Detalle de Materia',
+                'activities': 'Actividades y Cuestionarios',
+                'quiz': 'Evaluación en curso',
+                'quiz-results': 'Resultados',
+                'progress': 'Mi Progreso',
+                'achievements': 'Logros e Insignias',
+                'profile': 'Mi Perfil',
+                'settings': 'Configuración'
+            };
+            document.getElementById('pageTitle').textContent = titleMap[viewId] || 'Aula 7';
+
+            // Cerrar menú móvil si está abierto
+            closeMobileMenu();
+
+            // Cargas específicas por vista
+            if (viewId === 'subject-detail' && param) loadSubjectDetail(param);
+            if (viewId === 'progress') updateProgressView();
+            if (viewId === 'profile') updateProfileView();
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            lucide.createIcons();
+        }
+
+        /* RENDERIZADO DE MATERIAS */
+        function renderSubjects() {
+            const dashGrid = document.getElementById('dashSubjectsGrid');
+            const fullGrid = document.getElementById('subjectsFullGrid');
+
+            if (!dashGrid || !fullGrid) return;
+
+            dashGrid.innerHTML = '';
+            fullGrid.innerHTML = '';
+
+            SUBJECTS_DATA.forEach((subj, idx) => {
+                const prog = state.completedQuizzes[subj.id] || 0;
+
+                // Template para Tarjeta de Materia
+                const cardHTML = `
+                    <div class="bg-white dark:bg-slate-800 p-5 rounded-3xl border border-slate-100 dark:border-slate-700/60 shadow-sm hover:shadow-md transition flex flex-col justify-between space-y-4">
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <div class="p-3 bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 rounded-2xl">
+                                    <i data-lucide="${subj.icon}" class="w-6 h-6"></i>
+                                </div>
+                                <span class="text-xs font-bold px-2.5 py-1 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 rounded-full">${prog}% completado</span>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-slate-900 dark:text-white text-base">${subj.name}</h4>
+                                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 line-clamp-2">${subj.description}</p>
+                            </div>
+                        </div>
+
+                        <div class="space-y-3 pt-2">
+                            <div class="w-full bg-slate-100 dark:bg-slate-700 h-2 rounded-full overflow-hidden">
+                                <div class="bg-indigo-600 h-full transition-all duration-300" style="width: ${prog}%"></div>
+                            </div>
+                            <button onclick="navigateTo('subject-detail', '${subj.id}')" class="w-full py-2.5 bg-slate-100 hover:bg-indigo-600 hover:text-white dark:bg-slate-700 dark:hover:bg-indigo-600 text-slate-700 dark:text-slate-200 font-bold rounded-xl text-xs transition flex items-center justify-center gap-1.5">
+                                <span>Entrar a materia</span>
+                                <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+
+                fullGrid.innerHTML += cardHTML;
+                if (idx < 4) dashGrid.innerHTML += cardHTML;
+            });
+        }
+
+        /* DETALLE DE MATERIA */
+        function loadSubjectDetail(subjId) {
+            const subj = SUBJECTS_DATA.find(s => s.id === subjId);
+            if (!subj) return;
+
+            const prog = state.completedQuizzes[subj.id] || 0;
+
+            document.getElementById('subjectDetailHeader').innerHTML = `
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                    <div class="flex items-center gap-4">
+                        <div class="p-4 bg-indigo-600 text-white rounded-2xl shadow-lg shadow-indigo-500/20">
+                            <i data-lucide="${subj.icon}" class="w-8 h-8"></i>
+                        </div>
+                        <div>
+                            <span class="text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">Asignatura</span>
+                            <h2 class="text-2xl font-extrabold text-slate-900 dark:text-white">${subj.name}</h2>
+                            <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">${subj.description}</p>
+                        </div>
+                    </div>
+                    <button onclick="startQuiz('${subj.id}')" class="w-full sm:w-auto px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-md transition flex items-center justify-center gap-2 text-sm">
+                        <i data-lucide="play" class="w-4 h-4 fill-current"></i> Realizar Cuestionario
+                    </button>
+                </div>
+            `;
+
+            const modulesList = document.getElementById('subjectModulesList');
+            modulesList.innerHTML = '';
+            subj.topics.forEach((topic, idx) => {
+                modulesList.innerHTML += `
+                    <div class="p-4 bg-slate-50 dark:bg-slate-900/50 rounded-2xl border border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <span class="w-7 h-7 rounded-xl bg-indigo-100 dark:bg-indigo-900/60 text-indigo-600 dark:text-indigo-400 font-bold text-xs flex items-center justify-center">${idx + 1}</span>
+                            <span class="font-semibold text-slate-800 dark:text-slate-200 text-sm">${topic}</span>
+                        </div>
+                        <i data-lucide="check-circle" class="w-5 h-5 ${prog === 100 ? 'text-emerald-500' : 'text-slate-300 dark:text-slate-700'}"></i>
+                    </div>
+                `;
+            });
+
+            lucide.createIcons();
+        }
+
+        function renderActivities() {
+            const grid = document.getElementById('activitiesGrid');
+            const dashPending = document.getElementById('dashPendingActivities');
+            if (!grid) return;
+
+            grid.innerHTML = '';
+            if (dashPending) dashPending.innerHTML = '';
+
+            SUBJECTS_DATA.forEach((subj, idx) => {
+                const isCompleted = state.completedQuizzes[subj.id] !== undefined;
+                const score = state.completedQuizzes[subj.id] || 0;
+
+                const actCard = `
+                    <div class="bg-white dark:bg-slate-800 p-5 rounded-3xl border border-slate-100 dark:border-slate-700/60 shadow-sm flex flex-col justify-between space-y-4">
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="px-2.5 py-1 text-xs font-bold rounded-full ${isCompleted ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-400' : 'bg-amber-100 text-amber-700 dark:bg-amber-950/60 dark:text-amber-400'}">
+                                    ${isCompleted ? 'Completado (' + score + '%)' : 'Pendiente'}
+                                </span>
+                                <span class="text-xs text-slate-400 font-medium">${subj.questions.length} Preguntas</span>
+                            </div>
+                            <h4 class="font-bold text-slate-900 dark:text-white text-base">Cuestionario: ${subj.name}</h4>
+                            <p class="text-xs text-slate-500 dark:text-slate-400">Ponte a prueba en los contenidos vistos de ${subj.name.toLowerCase()}.</p>
+                        </div>
+                        <button onclick="startQuiz('${subj.id}')" class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl text-xs transition flex items-center justify-center gap-1.5">
+                            <i data-lucide="file-check" class="w-4 h-4"></i>
+                            <span>${isCompleted ? 'Volver a intentar' : 'Iniciar Cuestionario'}</span>
+                        </button>
+                    </div>
+                `;
+
+                grid.innerHTML += actCard;
+
+                if (dashPending && !isCompleted && idx < 3) {
+                    dashPending.innerHTML += `
+                        <div class="p-3 bg-slate-50 dark:bg-slate-900/50 rounded-2xl border border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                            <div>
+                                <h5 class="font-bold text-slate-800 dark:text-white text-xs">${subj.name}</h5>
+                                <span class="text-[10px] text-slate-400">Sin realizar</span>
+                            </div>
+                            <button onclick="startQuiz('${subj.id}')" class="px-3 py-1.5 bg-indigo-600 text-white text-xs font-bold rounded-lg hover:bg-indigo-700 transition">
+                                Resolver
+                            </button>
+                        </div>
+                    `;
+                }
+            });
+
+            if (dashPending && dashPending.children.length === 0) {
+                dashPending.innerHTML = `<p class="text-xs text-emerald-600 dark:text-emerald-400 font-semibold text-center py-2">🎉 ¡Has completado todas las actividades disponibles!</p>`;
+            }
+        }
+
+        function startQuiz(subjId) {
+            const subj = SUBJECTS_DATA.find(s => s.id === subjId);
+            if (!subj || !subj.questions.length) return;
+
+            activeQuiz = {
+                subjectId: subj.id,
+                questions: subj.questions,
+                currentIndex: 0,
+                scorePoints: 0,
+                correctCount: 0,
+                selectedAnswer: null
+            };
+
+            document.getElementById('quizSubjectBadge').textContent = subj.name;
+            document.getElementById('quizTotalIndex').textContent = subj.questions.length;
+
+            renderQuestion();
+            navigateTo('quiz');
+        }
+
+        function renderQuestion() {
+            const q = activeQuiz.questions[activeQuiz.currentIndex];
+            document.getElementById('quizCurrentIndex').textContent = activeQuiz.currentIndex + 1;
+            document.getElementById('quizScoreTracker').textContent = `Puntos: ${activeQuiz.scorePoints}`;
+
+            const progPct = ((activeQuiz.currentIndex) / activeQuiz.questions.length) * 100;
+            document.getElementById('quizProgressBar').style.width = `${progPct}%`;
+
+            document.getElementById('quizQuestionText').textContent = q.question;
+
+            // Ocultar feedback previo
+            const feedbackBox = document.getElementById('quizFeedbackBox');
+            feedbackBox.classList.add('hidden');
+
+            // Resetear botón Siguiente
+            const nextBtn = document.getElementById('quizNextBtn');
+            nextBtn.disabled = true;
+            nextBtn.classList.add('opacity-50', 'cursor-not-allowed');
+
+            activeQuiz.selectedAnswer = null;
+
+            // Render opciones
+            const container = document.getElementById('quizOptionsContainer');
+            container.innerHTML = '';
+
+            q.options.forEach((opt, idx) => {
+                container.innerHTML += `
+                    <button onclick="selectAnswer(${idx})" id="opt-btn-${idx}" class="w-full p-4 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-750 text-left text-xs sm:text-sm font-semibold text-slate-800 dark:text-slate-200 transition flex items-center gap-3">
+                        <span class="w-7 h-7 rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 font-bold text-xs flex items-center justify-center shrink-0">${String.fromCharCode(65 + idx)}</span>
+                        <span class="flex-1">${opt}</span>
+                    </button>
+                `;
+            });
+        }
+
+        function selectAnswer(optIdx) {
+            if (activeQuiz.selectedAnswer !== null) return; // Evitar selección múltiple
+
+            activeQuiz.selectedAnswer = optIdx;
+            const q = activeQuiz.questions[activeQuiz.currentIndex];
+            const isCorrect = optIdx === q.correct;
+
+            // Estilar botones de opción
+            q.options.forEach((_, idx) => {
+                const btn = document.getElementById(`opt-btn-${idx}`);
+                btn.disabled = true;
+                if (idx === q.correct) {
+                    btn.classList.remove('border-slate-200', 'dark:border-slate-700');
+                    btn.classList.add('border-emerald-500', 'bg-emerald-50', 'dark:bg-emerald-950/50', 'text-emerald-800', 'dark:text-emerald-200');
+                } else if (idx === optIdx && !isCorrect) {
+                    btn.classList.remove('border-slate-200', 'dark:border-slate-700');
+                    btn.classList.add('border-red-500', 'bg-red-50', 'dark:bg-red-950/50', 'text-red-800', 'dark:text-red-200');
+                }
+            });
+
+            // Mostrar Feedback pedagógico
+            const feedbackBox = document.getElementById('quizFeedbackBox');
+            const feedbackHeader = document.getElementById('quizFeedbackHeader');
+            const feedbackBody = document.getElementById('quizFeedbackBody');
+
+            feedbackBox.classList.remove('hidden');
+
+            if (isCorrect) {
+                activeQuiz.correctCount++;
+                activeQuiz.scorePoints += 100;
+                feedbackBox.className = "p-4 rounded-2xl space-y-1 bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800 text-emerald-900 dark:text-emerald-200";
+                feedbackHeader.innerHTML = `<i data-lucide="check-circle" class="w-5 h-5 text-emerald-600"></i> ¡Respuesta Correcta! (+100 pts)`;
+            } else {
+                feedbackBox.className = "p-4 rounded-2xl space-y-1 bg-red-50 dark:bg-red-950/50 border border-red-200 dark:border-red-800 text-red-900 dark:text-red-200";
+                feedbackHeader.innerHTML = `<i data-lucide="alert-circle" class="w-5 h-5 text-red-600"></i> Respuesta Incorrecta`;
+            }
+
+            feedbackBody.textContent = q.explanation;
+
+            // Habilitar botón Siguiente
+            const nextBtn = document.getElementById('quizNextBtn');
+            nextBtn.disabled = false;
+            nextBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+
+            lucide.createIcons();
+        }
+
+        function nextQuestion() {
+            activeQuiz.currentIndex++;
+            if (activeQuiz.currentIndex < activeQuiz.questions.length) {
+                renderQuestion();
+            } else {
+                finishQuiz();
+            }
+        }
+
+        function finishQuiz() {
+            const totalQ = activeQuiz.questions.length;
+            const scorePct = Math.round((activeQuiz.correctCount / totalQ) * 100);
+
+            // Guardar progreso de materia
+            state.completedQuizzes[activeQuiz.subjectId] = Math.max(state.completedQuizzes[activeQuiz.subjectId] || 0, scorePct);
+            state.points += activeQuiz.scorePoints;
+
+            // Evaluar Logros
+            checkAchievements(scorePct, activeQuiz.subjectId);
+
+            saveState();
+            renderActivities();
+
+            // Renderizar vista resultados
+            document.getElementById('resScore').textContent = `${scorePct}%`;
+            document.getElementById('resPoints').textContent = `+${activeQuiz.scorePoints} pts`;
+
+            navigateTo('quiz-results');
+        }
+
+        function confirmExitQuiz() {
+            if (confirm("¿Seguro que deseas salir? Perderás el progreso de este cuestionario.")) {
+                navigateTo('activities');
+            }
+        }
+
+        function checkAchievements(lastScore, subjId) {
+            let newlyUnlocked = false;
+
+            const unlock = (badgeId) => {
+                if (!state.unlockedBadges.includes(badgeId)) {
+                    state.unlockedBadges.push(badgeId);
+                    newlyUnlocked = true;
+                    showToast(`🏆 ¡Logro desbloqueado! Checkea tus medallas.`, 'success');
+                }
+            };
+
+            // 1. Primera actividad
+            if (Object.keys(state.completedQuizzes).length >= 1) unlock('first_quiz');
+
+            // 2. 5 actividades completadas
+            if (Object.keys(state.completedQuizzes).length >= 5) unlock('quiz_5');
+
+            // 3. Maestro de matemáticas
+            if (subjId === 'math' && lastScore === 100) unlock('math_master');
+
+            // 4. Explorador científico
+            if (subjId === 'science' && lastScore >= 70) unlock('science_explorer');
+
+            // 5. Perfeccionista
+            if (lastScore === 100) unlock('perfectionist');
+
+            const badgeBanner = document.getElementById('resBadgeUnlocked');
+            if (badgeBanner) {
+                badgeBanner.classList.toggle('hidden', !newlyUnlocked);
+            }
+        }
+
+        function updateUIHeaderAndMetrics() {
+            // Header
+            document.getElementById('headerStreak').textContent = `${state.streak}d`;
+            document.getElementById('headerPoints').textContent = `${state.points} pts`;
+            const name = state.user ? state.user.name : 'Estudiante';
+            document.getElementById('headerStudentName').textContent = name;
+            document.getElementById('dashStudentName').textContent = name;
+
+            // Calcular Progreso Global
+            const totalSubjs = SUBJECTS_DATA.length;
+            const completedKeys = Object.keys(state.completedQuizzes);
+            const sumScores = completedKeys.reduce((acc, k) => acc + state.completedQuizzes[k], 0);
+            const globalPct = totalSubjs > 0 ? Math.round(sumScores / totalSubjs) : 0;
+
+            document.getElementById('dashGlobalProgress').textContent = `${globalPct}%`;
+            document.getElementById('dashCompletedCount').textContent = `${completedKeys.length}/${totalSubjs}`;
+            document.getElementById('dashTotalPoints').textContent = state.points;
+            document.getElementById('dashAchievementsCount').textContent = `${state.unlockedBadges.length}/${ACHIEVEMENTS_DATA.length}`;
+
+            renderSubjects();
+            renderRecentBadges();
+        }
+
+        function renderAchievements() {
+            const grid = document.getElementById('achievementsListGrid');
+            if (!grid) return;
+
+            grid.innerHTML = '';
+            ACHIEVEMENTS_DATA.forEach(ach => {
+                const isUnlocked = state.unlockedBadges.includes(ach.id);
+                grid.innerHTML += `
+                    <div class="p-5 rounded-3xl border ${isUnlocked ? 'bg-white dark:bg-slate-800 border-indigo-200 dark:border-indigo-800/60 shadow-sm' : 'bg-slate-100/50 dark:bg-slate-800/30 border-slate-200 dark:border-slate-800 opacity-60'} flex items-start gap-4">
+                        <div class="p-3.5 rounded-2xl ${isUnlocked ? 'bg-amber-100 text-amber-600 dark:bg-amber-950/60 dark:text-amber-400' : 'bg-slate-200 text-slate-400 dark:bg-slate-700'}">
+                            <i data-lucide="${ach.icon}" class="w-7 h-7"></i>
+                        </div>
+                        <div class="space-y-1">
+                            <div class="flex items-center gap-2">
+                                <h4 class="font-bold text-slate-900 dark:text-white text-sm">${ach.name}</h4>
+                                ${isUnlocked ? '<span class="text-[10px] font-bold px-2 py-0.5 bg-emerald-100 text-emerald-700 dark:bg-emerald-950/80 dark:text-emerald-300 rounded-full">Desbloqueado</span>' : ''}
+                            </div>
+                            <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">${ach.desc}</p>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function renderRecentBadges() {
+            const container = document.getElementById('dashRecentBadges');
+            if (!container) return;
+
+            container.innerHTML = '';
+            if (state.unlockedBadges.length === 0) {
+                container.innerHTML = `<p class="text-xs text-slate-400 italic">Aún no has desbloqueado ningún logro. ¡Completa cuestionarios para ganar insignias!</p>`;
+                return;
+            }
+
+            state.unlockedBadges.forEach(badgeId => {
+                const ach = ACHIEVEMENTS_DATA.find(a => a.id === badgeId);
+                if (ach) {
+                    container.innerHTML += `
+                        <div class="p-2 bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800 rounded-2xl flex items-center gap-2 text-xs font-bold text-amber-700 dark:text-amber-300">
+                            <i data-lucide="${ach.icon}" class="w-4 h-4"></i>
+                            <span>${ach.name}</span>
+                        </div>
+                    `;
+                }
+            });
+            lucide.createIcons();
+        }
+
+        function updateProgressView() {
+            const totalSubjs = SUBJECTS_DATA.length;
+            const completedKeys = Object.keys(state.completedQuizzes);
+            const sumScores = completedKeys.reduce((acc, k) => acc + state.completedQuizzes[k], 0);
+            const globalPct = totalSubjs > 0 ? Math.round(sumScores / totalSubjs) : 0;
+
+            document.getElementById('progGlobalText').textContent = `${globalPct}%`;
+            document.getElementById('progGlobalBar').style.width = `${globalPct}%`;
+            document.getElementById('progTotalQuizzes').textContent = completedKeys.length;
+            document.getElementById('progPassedQuizzes').textContent = completedKeys.filter(k => state.completedQuizzes[k] >= 60).length;
+            document.getElementById('progAvgPoints').textContent = state.points > 0 ? Math.round(state.points / (completedKeys.length || 1)) : 0;
+
+            const grid = document.getElementById('progressSubjectsGrid');
+            grid.innerHTML = '';
+
+            SUBJECTS_DATA.forEach(subj => {
+                const prog = state.completedQuizzes[subj.id] || 0;
+                grid.innerHTML += `
+                    <div class="p-4 bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700/60 space-y-2">
+                        <div class="flex justify-between text-xs font-bold">
+                            <span class="text-slate-800 dark:text-white">${subj.name}</span>
+                            <span class="text-indigo-600 dark:text-indigo-400">${prog}%</span>
+                        </div>
+                        <div class="w-full bg-slate-100 dark:bg-slate-700 h-2.5 rounded-full overflow-hidden">
+                            <div class="bg-indigo-600 h-full transition-all duration-500" style="width: ${prog}%"></div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function updateProfileView() {
+            const name = state.user ? state.user.name : 'Estudiante Demo';
+            document.getElementById('profileName').textContent = name;
+            document.getElementById('profilePoints').textContent = state.points;
+            document.getElementById('profileStreak').textContent = `${state.streak} días`;
+            document.getElementById('profileBadges').textContent = `${state.unlockedBadges.length}/${ACHIEVEMENTS_DATA.length}`;
+            
+            const level = Math.floor(state.points / 300) + 1;
+            document.getElementById('profileLevel').textContent = `Nivel ${level}`;
+        }
+
+        function updateNickname() {
+            const input = document.getElementById('nicknameInput');
+            if (input && input.value.trim()) {
+                if (!state.user) state.user = {};
+                state.user.name = input.value.trim();
+                saveState();
+                updateProfileView();
+                showToast('Nombre actualizado correctamente', 'success');
+                input.value = '';
+            }
+        }
+
+        function initTheme() {
+            if (state.settings.darkMode) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+            const toggle = document.getElementById('settingsDarkModeToggle');
+            if (toggle) toggle.checked = state.settings.darkMode;
+        }
+
+        function toggleDarkMode() {
+            state.settings.darkMode = !state.settings.darkMode;
+            if (state.settings.darkMode) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+            saveState();
+            const toggle = document.getElementById('settingsDarkModeToggle');
+            if (toggle) toggle.checked = state.settings.darkMode;
+        }
+
+        function toggleAnimations() {
+            state.settings.animations = !state.settings.animations;
+            if (!state.settings.animations) {
+                document.body.classList.add('no-animations');
+            } else {
+                document.body.classList.remove('no-animations');
+            }
+            saveState();
+        }
+
+        function toggleMobileMenu() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('mobileOverlay');
+            sidebar.classList.toggle('-translate-x-full');
+            overlay.classList.toggle('hidden');
+        }
+
+        function closeMobileMenu() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('mobileOverlay');
+            sidebar.classList.add('-translate-x-full');
+            overlay.classList.add('hidden');
+        }
+
+        function openResetModal() {
+            document.getElementById('resetModal').classList.remove('hidden');
+        }
+
+        function closeResetModal() {
+            document.getElementById('resetModal').classList.add('hidden');
+        }
+
+        function confirmResetProgress() {
+            state.points = 0;
+            state.completedQuizzes = {};
+            state.unlockedBadges = [];
+            saveState();
+            closeResetModal();
+            updateUIHeaderAndMetrics();
+            showToast('El progreso ha sido reiniciado por completo.', 'info');
+        }
+
+        /* SISTEMA DE NOTIFICACIONES TOAST */
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            if (!container) return;
+
+            const toast = document.createElement('div');
+            const bgClass = type === 'success' ? 'bg-emerald-600 text-white' : type === 'error' ? 'bg-red-600 text-white' : 'bg-indigo-600 text-white';
+
+            toast.className = `pointer-events-auto p-4 rounded-2xl shadow-xl ${bgClass} font-semibold text-xs sm:text-sm flex items-center justify-between gap-3 transform transition-all duration-300 translate-y-2 opacity-0`;
+            toast.innerHTML = `
+                <span>${message}</span>
+                <button onclick="this.parentElement.remove()" class="opacity-70 hover:opacity-100">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+            `;
+
+            container.appendChild(toast);
+            lucide.createIcons();
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-2', 'opacity-0');
+            }, 10);
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-2');
+                setTimeout(() => toast.remove(), 300);
+            }, 4000);
+        }
+    </script>
+</body>
+</html>
