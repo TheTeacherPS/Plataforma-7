@@ -33,7 +33,7 @@
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
         
         body {
             font-family: 'Inter', sans-serif;
@@ -73,6 +73,7 @@
 
     <div id="toastContainer" class="fixed top-5 right-5 z-50 flex flex-col gap-3 pointer-events-none max-w-sm w-full px-4"></div>
 
+    <!-- Pantalla de Login -->
     <div id="loginScreen" class="fixed inset-0 z-40 bg-gradient-to-br from-indigo-900 via-slate-900 to-slate-950 flex items-center justify-center p-4">
         <div class="bg-white dark:bg-slate-800/90 backdrop-blur-md w-full max-w-md p-8 rounded-3xl shadow-2xl border border-slate-100 dark:border-slate-700/50">
             <div class="text-center mb-8">
@@ -125,6 +126,7 @@
         </div>
     </div>
 
+    <!-- App Layout principal -->
     <div id="appLayout" class="hidden flex-1 flex flex-col md:flex-row min-h-screen">
         
         <!-- Overlay para móvil -->
@@ -213,8 +215,8 @@
 
                     <!-- Avatar Estudiante -->
                     <div onclick="navigateTo('profile')" class="flex items-center gap-2 cursor-pointer pl-2 border-l border-slate-200 dark:border-slate-700">
-                        <div id="headerAvatar" class="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-500 to-purple-500 text-white font-bold flex items-center justify-center text-sm shadow-sm">
-                            ED
+                        <div id="headerAvatarContainer" class="w-9 h-9 rounded-xl overflow-hidden bg-gradient-to-tr from-indigo-500 to-purple-500 text-white font-bold flex items-center justify-center text-sm shadow-sm shrink-0">
+                            <span id="headerAvatarText">ED</span>
                         </div>
                         <span class="hidden sm:inline-block font-semibold text-sm text-slate-700 dark:text-slate-200" id="headerStudentName">Estudiante</span>
                     </div>
@@ -226,18 +228,18 @@
                 <!-- VISTA: DASHBOARD -->
                 <section id="view-dashboard" class="space-y-6 max-w-7xl mx-auto">
                     <!-- Banner Saludo -->
-                    <div class="relative overflow-hidden bg-gradient-to-r from-indigo-600 to-purple-600 rounded-3xl p-6 sm:p-8 text-white shadow-xl">
+                    <div class="relative overflow-hidden bg-gradient-to-r from-indigo-600 via-indigo-700 to-purple-600 rounded-3xl p-6 sm:p-8 text-white shadow-xl">
                         <div class="relative z-10">
-                            <span class="px-3 py-1 bg-white/20 backdrop-blur-md rounded-full text-xs font-semibold tracking-wider uppercase">Grado 7º - Periodo Activo</span>
+                            <span class="px-3 py-1 bg-white/20 backdrop-blur-md rounded-full text-xs font-semibold tracking-wider uppercase">Grado 7º - 13 Materias Activas</span>
                             <h2 class="text-2xl sm:text-4xl font-extrabold mt-3 tracking-tight">¡Hola, <span id="dashStudentName">Estudiante</span>! 👋</h2>
-                            <p class="text-indigo-100 mt-2 max-w-xl text-sm sm:text-base">¿Listo para aprender hoy? Revisa tus tareas pendientes y sigue sumando puntos para subir de posición.</p>
+                            <p class="text-indigo-100 mt-2 max-w-xl text-sm sm:text-base">¿Listo para aprender hoy? Completa tus 13 asignaturas, sube tu foto de perfil y desbloquea todas las medallas.</p>
                             
                             <div class="mt-6 flex flex-wrap gap-3">
-                                <button onclick="navigateTo('subjects')" class="px-5 py-2.5 bg-white text-indigo-600 font-bold rounded-xl hover:bg-indigo-50 transition shadow-md text-sm">
-                                    Explorar Materias
+                                <button onclick="navigateTo('subjects')" class="px-5 py-2.5 bg-white text-indigo-600 font-bold rounded-xl hover:bg-indigo-50 transition shadow-md text-sm flex items-center gap-2">
+                                    <i data-lucide="book-open" class="w-4 h-4"></i> Explorar 13 Materias
                                 </button>
-                                <button onclick="navigateTo('activities')" class="px-5 py-2.5 bg-indigo-700/60 hover:bg-indigo-700 text-white font-semibold rounded-xl border border-white/20 transition text-sm">
-                                    Ver Cuestionarios
+                                <button onclick="navigateTo('activities')" class="px-5 py-2.5 bg-indigo-700/60 hover:bg-indigo-700 text-white font-semibold rounded-xl border border-white/20 transition text-sm flex items-center gap-2">
+                                    <i data-lucide="play-circle" class="w-4 h-4"></i> Ver Cuestionarios
                                 </button>
                             </div>
                         </div>
@@ -262,7 +264,7 @@
                             </div>
                             <div>
                                 <span class="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase">Completadas</span>
-                                <p class="text-xl sm:text-2xl font-black text-slate-800 dark:text-white" id="dashCompletedCount">0/0</p>
+                                <p class="text-xl sm:text-2xl font-black text-slate-800 dark:text-white" id="dashCompletedCount">0/13</p>
                             </div>
                         </div>
 
@@ -282,7 +284,7 @@
                             </div>
                             <div>
                                 <span class="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase">Logros Obt.</span>
-                                <p class="text-xl sm:text-2xl font-black text-slate-800 dark:text-white" id="dashAchievementsCount">0/6</p>
+                                <p class="text-xl sm:text-2xl font-black text-slate-800 dark:text-white" id="dashAchievementsCount">0/8</p>
                             </div>
                         </div>
                     </div>
@@ -291,8 +293,8 @@
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                         <div class="lg:col-span-2 space-y-4">
                             <div class="flex items-center justify-between">
-                                <h3 class="font-bold text-slate-800 dark:text-white text-lg">Tus Materias</h3>
-                                <button onclick="navigateTo('subjects')" class="text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:underline">Ver todas</button>
+                                <h3 class="font-bold text-slate-800 dark:text-white text-lg">Tus Materias de Séptimo</h3>
+                                <button onclick="navigateTo('subjects')" class="text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:underline">Ver las 13 materias</button>
                             </div>
                             <div id="dashSubjectsGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <!-- Se renderiza dinámicamente -->
@@ -311,9 +313,12 @@
                             </div>
 
                             <div class="bg-white dark:bg-slate-800 p-5 rounded-3xl border border-slate-100 dark:border-slate-700/60 shadow-sm space-y-4">
-                                <h3 class="font-bold text-slate-800 dark:text-white flex items-center gap-2">
-                                    <i data-lucide="star" class="w-5 h-5 text-amber-500"></i> Logros Desbloqueados
-                                </h3>
+                                <div class="flex items-center justify-between">
+                                    <h3 class="font-bold text-slate-800 dark:text-white flex items-center gap-2">
+                                        <i data-lucide="star" class="w-5 h-5 text-amber-500"></i> Logros Desbloqueados
+                                    </h3>
+                                    <button onclick="navigateTo('achievements')" class="text-xs text-indigo-600 font-bold hover:underline">Ver todos</button>
+                                </div>
                                 <div id="dashRecentBadges" class="flex flex-wrap gap-2">
                                     <!-- Render dinámico -->
                                 </div>
@@ -322,14 +327,23 @@
                     </div>
                 </section>
 
-                <!-- VISTA: MIS MATERIAS -->
+                <!-- VISTA: MIS MATERIAS (13 MATERIAS CON BÚSQUEDA) -->
                 <section id="view-subjects" class="hidden space-y-6 max-w-7xl mx-auto">
-                    <div>
-                        <h2 class="text-2xl font-bold text-slate-900 dark:text-white">Materias de Séptimo Grado</h2>
-                        <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Selecciona una materia para explorar su plan de estudios y poner a prueba tus conocimientos.</p>
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <div>
+                            <h2 class="text-2xl font-bold text-slate-900 dark:text-white">Materias de Séptimo Grado (13)</h2>
+                            <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Explora el plan de estudios completo y pon a prueba tus conocimientos.</p>
+                        </div>
+
+                        <!-- Buscador de Materias -->
+                        <div class="relative max-w-xs w-full">
+                            <i data-lucide="search" class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                            <input type="text" id="searchSubjectInput" oninput="filterSubjects()" class="w-full pl-10 pr-4 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs sm:text-sm dark:text-white outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Buscar materia...">
+                        </div>
                     </div>
+
                     <div id="subjectsFullGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        <!-- Render dinámico de las 7 materias -->
+                        <!-- Render dinámico de las 13 materias -->
                     </div>
                 </section>
 
@@ -344,7 +358,7 @@
                     </div>
 
                     <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-100 dark:border-slate-700/60 shadow-sm">
-                        <h3 class="font-bold text-lg text-slate-900 dark:text-white mb-4">Módulos de Aprendizaje</h3>
+                        <h3 class="font-bold text-lg text-slate-900 dark:text-white mb-4">Temario y Módulos de Aprendizaje</h3>
                         <div id="subjectModulesList" class="space-y-3">
                             <!-- Lista dinámica de módulos -->
                         </div>
@@ -354,8 +368,8 @@
                 <!-- VISTA: ACTIVIDADES & QUIZ -->
                 <section id="view-activities" class="hidden space-y-6 max-w-7xl mx-auto">
                     <div>
-                        <h2 class="text-2xl font-bold text-slate-900 dark:text-white">Cuestionarios Evaluativos</h2>
-                        <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Completa los cuestionarios de cada materia para ganar puntos y desbloquear medallas.</p>
+                        <h2 class="text-2xl font-bold text-slate-900 dark:text-white">Cuestionarios Evaluativos (10 Preguntas c/u)</h2>
+                        <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Completa las evaluaciones aleatorizadas de cada materia para ganar puntos y desbloquear insignias.</p>
                     </div>
 
                     <div id="activitiesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -363,7 +377,7 @@
                     </div>
                 </section>
 
-                <!-- VISTA: CUESTIONARIO EN CURSO (MODAL / INTERFAZ DE QUIZ) -->
+                <!-- VISTA: CUESTIONARIO EN CURSO (QUIZ RANDOMIZADO) -->
                 <section id="view-quiz" class="hidden max-w-3xl mx-auto space-y-6">
                     <div class="flex items-center justify-between">
                         <button onclick="confirmExitQuiz()" class="text-xs font-bold text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white flex items-center gap-1.5">
@@ -375,7 +389,7 @@
                     <!-- Progreso Cuestionario -->
                     <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-100 dark:border-slate-700/60 shadow-sm space-y-2">
                         <div class="flex justify-between text-xs font-bold text-slate-500 dark:text-slate-400">
-                            <span>Pregunta <span id="quizCurrentIndex">1</span> de <span id="quizTotalIndex">5</span></span>
+                            <span>Pregunta <span id="quizCurrentIndex">1</span> de <span id="quizTotalIndex">10</span></span>
                             <span id="quizScoreTracker">Puntos: 0</span>
                         </div>
                         <div class="w-full bg-slate-100 dark:bg-slate-700 h-2.5 rounded-full overflow-hidden">
@@ -401,8 +415,8 @@
 
                         <!-- Botón Siguiente -->
                         <div class="flex justify-end">
-                            <button id="quizNextBtn" onclick="nextQuestion()" disabled class="px-6 py-3 bg-indigo-600 opacity-50 cursor-not-allowed hover:bg-indigo-700 text-white font-bold rounded-xl transition flex items-center gap-2">
-                                <span>Siguiente</span>
+                            <button id="quizNextBtn" onclick="nextQuestion()" disabled class="px-6 py-3 bg-indigo-600 opacity-50 cursor-not-allowed hover:bg-indigo-700 text-white font-bold rounded-xl transition flex items-center gap-2 text-sm">
+                                <span>Siguiente Pregunta</span>
                                 <i data-lucide="arrow-right" class="w-4 h-4"></i>
                             </button>
                         </div>
@@ -433,15 +447,15 @@
                         </div>
 
                         <div id="resBadgeUnlocked" class="hidden p-3 bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800 rounded-2xl text-emerald-700 dark:text-emerald-300 text-xs font-semibold flex items-center justify-center gap-2">
-                            <i data-lucide="award" class="w-5 h-5"></i> ¡Haz desbloqueado un nuevo logro!
+                            <i data-lucide="award" class="w-5 h-5"></i> ¡Has desbloqueado una o más insignias!
                         </div>
 
                         <div class="flex gap-3 justify-center">
                             <button onclick="navigateTo('activities')" class="px-6 py-3 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 font-bold rounded-xl hover:bg-slate-200 dark:hover:bg-slate-600 transition text-sm">
                                 Volver a actividades
                             </button>
-                            <button onclick="navigateTo('subjects')" class="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl transition text-sm">
-                                Ver materias
+                            <button onclick="navigateTo('achievements')" class="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl transition text-sm">
+                                Ver Logros
                             </button>
                         </div>
                     </div>
@@ -451,7 +465,7 @@
                 <section id="view-progress" class="hidden space-y-6 max-w-7xl mx-auto">
                     <div>
                         <h2 class="text-2xl font-bold text-slate-900 dark:text-white">Estadísticas de Rendimiento</h2>
-                        <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Sigue de cerca tu avance porcentual en cada asignatura.</p>
+                        <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Sigue de cerca tu avance porcentual en cada una de las 13 materias.</p>
                     </div>
 
                     <!-- Resumen General -->
@@ -463,15 +477,15 @@
                             </div>
                             <div class="flex gap-6 text-sm">
                                 <div>
-                                    <span class="block text-slate-400 text-xs font-semibold">Total Cuestionarios</span>
-                                    <span class="font-bold text-slate-700 dark:text-slate-200" id="progTotalQuizzes">0</span>
+                                    <span class="block text-slate-400 text-xs font-semibold">Evaluadas</span>
+                                    <span class="font-bold text-slate-700 dark:text-slate-200" id="progTotalQuizzes">0/13</span>
                                 </div>
                                 <div>
-                                    <span class="block text-slate-400 text-xs font-semibold">Aprobados</span>
+                                    <span class="block text-slate-400 text-xs font-semibold">Aprobadas</span>
                                     <span class="font-bold text-emerald-600 dark:text-emerald-400" id="progPassedQuizzes">0</span>
                                 </div>
                                 <div>
-                                    <span class="block text-slate-400 text-xs font-semibold">Promedio Puntos</span>
+                                    <span class="block text-slate-400 text-xs font-semibold">Puntos Totales</span>
                                     <span class="font-bold text-amber-500" id="progAvgPoints">0</span>
                                 </div>
                             </div>
@@ -486,34 +500,96 @@
                     </div>
 
                     <!-- Desglose por materia -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="progressSubjectsGrid">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="progressSubjectsGrid">
                         <!-- Carga dinámica -->
                     </div>
                 </section>
 
-                <!-- VISTA: LOGROS / INSIGNIAS -->
+                <!-- VISTA: LOGROS / INSIGNIAS (CORREGIDO Y OPTIMIZADO) -->
                 <section id="view-achievements" class="hidden space-y-6 max-w-7xl mx-auto">
-                    <div>
-                        <h2 class="text-2xl font-bold text-slate-900 dark:text-white">Sistema de Medallas y Insignias</h2>
-                        <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Completa desafíos académicos para coleccionar todas las insignias de Aula 7.</p>
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <div>
+                            <h2 class="text-2xl font-bold text-slate-900 dark:text-white">Sistema de Medallas y Logros</h2>
+                            <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Desbloquea insignias completando desafíos en tus 13 materias de Aula 7.</p>
+                        </div>
+
+                        <div class="px-4 py-2 bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-100 dark:border-indigo-900/50 rounded-2xl text-indigo-600 dark:text-indigo-300 font-bold text-sm self-start sm:self-auto flex items-center gap-2">
+                            <i data-lucide="award" class="w-5 h-5"></i>
+                            <span id="achievementsSummaryText">0 / 8 Desbloqueados</span>
+                        </div>
                     </div>
 
                     <div id="achievementsListGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                        <!-- Carga dinámica de las insignias -->
+                        <!-- Carga dinámica de las insignias corregida -->
                     </div>
                 </section>
 
-                <!-- VISTA: PERFIL DEL ESTUDIANTE -->
+                <!-- VISTA: PERFIL CON ADJUNTO DE FOTO -->
                 <section id="view-profile" class="hidden space-y-6 max-w-4xl mx-auto">
                     <div class="bg-white dark:bg-slate-800 p-6 sm:p-8 rounded-3xl border border-slate-100 dark:border-slate-700/60 shadow-sm relative overflow-hidden">
                         <div class="flex flex-col sm:flex-row items-center gap-6 relative z-10">
-                            <div id="profileBigAvatar" class="w-24 h-24 rounded-3xl bg-gradient-to-tr from-indigo-500 to-purple-600 text-white font-extrabold text-3xl flex items-center justify-center shadow-lg shadow-indigo-500/30">
-                                ED
+                            
+                            <!-- Foto / Avatar Principal -->
+                            <div class="relative group">
+                                <div id="profileBigAvatar" class="w-28 h-28 rounded-3xl bg-gradient-to-tr from-indigo-500 to-purple-600 text-white font-extrabold text-3xl flex items-center justify-center shadow-lg shadow-indigo-500/30 overflow-hidden shrink-0 border-4 border-white dark:border-slate-700">
+                                    <span id="profileBigAvatarText">ED</span>
+                                </div>
+                                <button onclick="document.getElementById('profileImageUpload').click()" class="absolute bottom-0 right-0 p-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl shadow-md transition transform hover:scale-110" title="Subir foto de perfil">
+                                    <i data-lucide="camera" class="w-4 h-4"></i>
+                                </button>
                             </div>
-                            <div class="text-center sm:text-left space-y-1">
-                                <span class="px-2.5 py-0.5 bg-indigo-50 dark:bg-indigo-950/80 text-indigo-600 dark:text-indigo-400 rounded-full font-bold text-xs uppercase">Estudiante Activo</span>
+
+                            <input type="file" id="profileImageUpload" accept="image/*" class="hidden" onchange="handleProfileImageUpload(event)">
+
+                            <div class="text-center sm:text-left space-y-2 flex-1">
+                                <div class="flex flex-wrap items-center justify-center sm:justify-start gap-2">
+                                    <span class="px-2.5 py-0.5 bg-indigo-50 dark:bg-indigo-950/80 text-indigo-600 dark:text-indigo-400 rounded-full font-bold text-xs uppercase">Estudiante Activo</span>
+                                    <span class="px-2.5 py-0.5 bg-emerald-50 dark:bg-emerald-950/80 text-emerald-600 dark:text-emerald-400 rounded-full font-bold text-xs uppercase">Séptimo Grado</span>
+                                </div>
                                 <h2 class="text-2xl font-extrabold text-slate-900 dark:text-white" id="profileName">Estudiante Demo</h2>
-                                <p class="text-sm text-slate-500 dark:text-slate-400">Grado Séptimo - Colegio Aula 7</p>
+                                <p class="text-xs text-slate-500 dark:text-slate-400">Colegio Aula 7 • 13 Materias Inscritas</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cambiar Foto de Perfil & Seleccionar Avatar -->
+                    <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-100 dark:border-slate-700/60 shadow-sm space-y-4">
+                        <h3 class="font-bold text-slate-900 dark:text-white text-base flex items-center gap-2">
+                            <i data-lucide="image" class="w-5 h-5 text-indigo-600"></i> Opciones de Foto de Perfil
+                        </h3>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <!-- Opción 1: Subir desde dispositivo -->
+                            <div class="p-4 bg-slate-50 dark:bg-slate-900/50 rounded-2xl border border-slate-200 dark:border-slate-700 flex flex-col justify-between space-y-3">
+                                <div>
+                                    <h4 class="font-semibold text-xs sm:text-sm text-slate-800 dark:text-slate-200">Adjuntar foto desde tu dispositivo</h4>
+                                    <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">Sube imágenes en formato JPG o PNG.</p>
+                                </div>
+                                <button onclick="document.getElementById('profileImageUpload').click()" class="w-full py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl text-xs transition flex items-center justify-center gap-2">
+                                    <i data-lucide="upload" class="w-4 h-4"></i> Adjuntar imagen
+                                </button>
+                            </div>
+
+                            <!-- Opción 2: Elegir Avatar Predefinido -->
+                            <div class="p-4 bg-slate-50 dark:bg-slate-900/50 rounded-2xl border border-slate-200 dark:border-slate-700 flex flex-col justify-between space-y-3">
+                                <div>
+                                    <h4 class="font-semibold text-xs sm:text-sm text-slate-800 dark:text-slate-200">Elegir Avatar de la Galería</h4>
+                                    <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">Selecciona un icono ilustrado predeterminado.</p>
+                                </div>
+                                <div class="flex gap-2 justify-center">
+                                    <button onclick="setPresetAvatar('https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80')" class="w-8 h-8 rounded-full overflow-hidden border-2 border-indigo-500 hover:scale-110 transition">
+                                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80" class="w-full h-full object-cover">
+                                    </button>
+                                    <button onclick="setPresetAvatar('https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=200&q=80')" class="w-8 h-8 rounded-full overflow-hidden border-2 border-indigo-500 hover:scale-110 transition">
+                                        <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=200&q=80" class="w-full h-full object-cover">
+                                    </button>
+                                    <button onclick="setPresetAvatar('https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80')" class="w-8 h-8 rounded-full overflow-hidden border-2 border-indigo-500 hover:scale-110 transition">
+                                        <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80" class="w-full h-full object-cover">
+                                    </button>
+                                    <button onclick="removeProfileImage()" class="px-2 py-1 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs rounded-lg hover:bg-red-500 hover:text-white transition">
+                                        Quitar foto
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -545,7 +621,7 @@
                         </div>
                         <div class="p-4 bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700/60 text-center">
                             <span class="block text-xs text-slate-400 font-semibold uppercase">Logros</span>
-                            <span class="text-xl font-bold text-purple-500" id="profileBadges">0/6</span>
+                            <span class="text-xl font-bold text-purple-500" id="profileBadges">0/8</span>
                         </div>
                     </div>
                 </section>
@@ -613,6 +689,7 @@
         </div>
     </div>
 
+    <!-- Modal Restablecer -->
     <div id="resetModal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 hidden">
         <div class="bg-white dark:bg-slate-800 rounded-3xl max-w-sm w-full p-6 text-center space-y-4 shadow-2xl border border-slate-100 dark:border-slate-700">
             <div class="w-12 h-12 bg-red-100 dark:bg-red-950/60 text-red-600 rounded-2xl flex items-center justify-center mx-auto">
@@ -632,34 +709,26 @@
     </div>
 
     <script>
-        /* BASE DE DATOS LOCAL DE MATERIAS Y CUESTIONARIOS DE GRADO SÉPTIMO */
+        /* BASE DE DATOS AMPLIADA: 13 MATERIAS Y 10 PREGUNTAS POR MATERIA */
         const SUBJECTS_DATA = [
             {
                 id: 'math',
                 name: 'Matemáticas',
                 icon: 'calculator',
                 color: 'blue',
-                description: 'Aprende sobre números enteros, proporciones, álgebra y geometría.',
-                topics: ['Números enteros', 'Fracciones', 'Proporcionalidad', 'Álgebra', 'Geometría', 'Estadística'],
+                description: 'Números enteros, proporciones, álgebra básica, geometría y estadística.',
+                topics: ['Números enteros', 'Fracciones y decimales', 'Proporcionalidad', 'Álgebra básica', 'Geometría plana', 'Estadística y probabilidad'],
                 questions: [
-                    {
-                        question: '¿Cuál es el resultado de la siguiente operación con enteros: (-8) + 15?',
-                        options: ['-23', '7', '-7', '23'],
-                        correct: 1,
-                        explanation: 'Al sumar números con signos diferentes, se restan sus valores absolutos (15 - 8 = 7) y se conserva el signo del mayor en valor absoluto (+).'
-                    },
-                    {
-                        question: 'Si 5 cuadernos cuestan $15.000, ¿cuánto costarán 8 cuadernos iguales?',
-                        options: ['$20.000', '$22.000', '$24.000', '$28.000'],
-                        correct: 2,
-                        explanation: 'Aplicando la regla de tres simple directa: Cada cuaderno cuesta $15.000 / 5 = $3.000. Por lo tanto, 8 cuadernos valen 8 × $3.000 = $24.000.'
-                    },
-                    {
-                        question: '¿Cuál es el área de un triángulo con base 10 cm y altura 6 cm?',
-                        options: ['60 cm²', '30 cm²', '16 cm²', '40 cm²'],
-                        correct: 1,
-                        explanation: 'La fórmula del área de un triángulo es (Base × Altura) / 2. Así: (10 × 6) / 2 = 60 / 2 = 30 cm².'
-                    }
+                    { question: '¿Cuál es el resultado de la siguiente operación con enteros: (-8) + 15?', options: ['-23', '7', '-7', '23'], correct: 1, explanation: 'Al sumar números con signos diferentes se restan sus valores absolutos (15 - 8 = 7) y se deja el signo del mayor (+).' },
+                    { question: 'Si 5 cuadernos cuestan $15.000, ¿cuánto costarán 8 cuadernos iguales?', options: ['$20.000', '$22.000', '$24.000', '$28.000'], correct: 2, explanation: '15.000 / 5 = $3.000 por cuaderno. Luego 8 × $3.000 = $24.000.' },
+                    { question: '¿Cuál es el área de un triángulo con base 10 cm y altura 6 cm?', options: ['60 cm²', '30 cm²', '16 cm²', '40 cm²'], correct: 1, explanation: 'Área del triángulo = (Base × Altura) / 2 = (10 × 6) / 2 = 30 cm².' },
+                    { question: '¿Cuál es el valor absoluto de -42?', options: ['-42', '42', '0', '1/42'], correct: 1, explanation: 'El valor absoluto es la distancia respecto a cero, siempre siendo positivo o cero.' },
+                    { question: '¿Cuál es la solución de la ecuación simple x + 9 = 21?', options: ['x = 30', 'x = 12', 'x = 11', 'x = 19'], correct: 1, explanation: 'Restando 9 en ambos lados: x = 21 - 9 = 12.' },
+                    { question: '¿Cómo se clasifica un ángulo que mide exactamente 90 grados?', options: ['Ángulo Agudo', 'Ángulo Recto', 'Ángulo Obtuso', 'Ángulo Llano'], correct: 1, explanation: 'Un ángulo de 90° es por definición un ángulo recto.' },
+                    { question: '¿Cuál es el resultado de multiplicar (-4) × (-6)?', options: ['-24', '24', '-10', '10'], correct: 1, explanation: 'Por la ley de signos: negativo por negativo resulta positivo (4 × 6 = 24).' },
+                    { question: 'Simplifica la fracción 12/16 a su mínima expresión:', options: ['6/8', '3/4', '2/3', '1/2'], correct: 1, explanation: 'Dividiendo numerador y denominador entre 4 se obtiene 3/4.' },
+                    { question: '¿Cuál es el perímetro de un cuadrado cuyo lado mide 7 cm?', options: ['49 cm', '28 cm', '14 cm', '21 cm'], correct: 1, explanation: 'El perímetro es la suma de sus 4 lados iguales: 7 × 4 = 28 cm.' },
+                    { question: 'En un grupo de números [4, 8, 8, 10, 15], ¿cuál es la moda?', options: ['4', '8', '9', '15'], correct: 1, explanation: 'La moda es el dato que más veces se repite, en este caso el 8.' }
                 ]
             },
             {
@@ -667,21 +736,19 @@
                 name: 'Lengua Castellana',
                 icon: 'book-open',
                 color: 'emerald',
-                description: 'Mejora tu gramática, ortografía y nivel de comprensión lectora.',
-                topics: ['Comprensión lectora', 'Gramática', 'Ortografía', 'Literatura', 'Tipos de texto'],
+                description: 'Comprensión de lectura, gramática, ortografía y análisis literario.',
+                topics: ['Sustantivos y adjetivos', 'Tipos de texto', 'Acentuación', 'Literatura medieval', 'Figuras literarias'],
                 questions: [
-                    {
-                        question: '¿Cuál de las siguientes palabras es un sustantivo abstracto?',
-                        options: ['Mesa', 'Justicia', 'Montaña', 'Lápiz'],
-                        correct: 1,
-                        explanation: 'Los sustantivos abstractos nombran ideas, valores o sentimientos que no se pueden percibir directamente por los sentidos físicos, como la "Justicia".'
-                    },
-                    {
-                        question: '¿Qué tipo de texto tiene como propósito principal relatar acontecimientos reales o imaginarios?',
-                        options: ['Texto Instructivo', 'Texto Narrativo', 'Texto Expositivo', 'Texto Argumentativo'],
-                        correct: 1,
-                        explanation: 'El texto narrativo relata una secuencia de hechos desarrollados en un tiempo y espacio determinado.'
-                    }
+                    { question: '¿Cuál de las siguientes palabras es un sustantivo abstracto?', options: ['Mesa', 'Justicia', 'Montaña', 'Lápiz'], correct: 1, explanation: 'Nombra ideas o sentimientos no perceptibles directamente por los sentidos físicos.' },
+                    { question: '¿Qué tipo de texto relata acontecimientos reales o imaginarios?', options: ['Texto Instructivo', 'Texto Narrativo', 'Texto Expositivo', 'Texto Argumentativo'], correct: 1, explanation: 'El texto narrativo relata hechos desarrollados en un tiempo y lugar determinado.' },
+                    { question: '¿Cuál de las siguientes palabras es esdrújula?', options: ['Café', 'Camión', 'Pájaro', 'Pared'], correct: 2, explanation: 'Las palabras esdrújulas llevan el acento en la antepenúltima sílaba y siempre llevan tilde.' },
+                    { question: 'Identifica el sujeto en: "Los estudiantes de séptimo aprobaron el examen con éxito."', options: ['El examen', 'Aprobaron', 'Los estudiantes de séptimo', 'Con éxito'], correct: 2, explanation: 'El sujeto realiza la acción expresada por el verbo.' },
+                    { question: '¿Qué figura literaria consiste en una comparación explícita usando "como"?', options: ['Metáfora', 'Símil o Comparación', 'Hipérbole', 'Personificación'], correct: 1, explanation: 'El símil establece una relación de semejanza explicita mediante conectores como "como" o "parece".' },
+                    { question: '¿Cuál es el antónimo de la palabra "Efímero"?', options: ['Pasajero', 'Duradero', 'Breve', 'Fugaz'], correct: 1, explanation: 'Efímero significa de corta duración, por lo que su opuesto es duradero.' },
+                    { question: '¿Qué función cumple la coma en una enumeración?', options: ['Separar elementos', 'Indicar pregunta', 'Finalizar un párrafo', 'Mostrar sorpresa'], correct: 0, explanation: 'La coma enumerativa separa palabras de una misma categoría dentro de una oración.' },
+                    { question: '¿A qué género literario pertenecen las obras destinadas a la representación teatral?', options: ['Lírico', 'Narrativo', 'Dramático', 'Didáctico'], correct: 2, explanation: 'El género dramático abarca las obras escritas en forma de diálogo para representación escénica.' },
+                    { question: '¿Qué es una palabra homófona?', options: ['Suena igual pero se escribe diferente', 'Significa lo mismo', 'Es totalmente opuesta', 'Tiene origen griego'], correct: 0, explanation: 'Las palabras homófonas se pronuncian igual pero tienen ortografía y significado distinto (ej. tubo/tuvo).' },
+                    { question: '¿Cuál es la idea principal de un párrafo expositivo?', options: ['La enseñanza moral', 'El concepto central desarrollado', 'Los personajes', 'El desenlace'], correct: 1, explanation: 'La idea principal sintetiza la información clave expresada en el párrafo.' }
                 ]
             },
             {
@@ -689,21 +756,19 @@
                 name: 'Ciencias Naturales',
                 icon: 'microscope',
                 color: 'purple',
-                description: 'Explora la estructura de las células, energía, ecosistemas y cuerpo humano.',
-                topics: ['La célula', 'Ecosistemas', 'Materia', 'Energía', 'Cuerpo humano'],
+                description: 'Estructura celular, taxonomía, energía, física elemental y ecosistemas.',
+                topics: ['Célula eucariota y procariota', 'Sistemas del cuerpo', 'Estados de la materia', 'Ecosistemas y cadenas tróficas', 'Leyes de movimiento'],
                 questions: [
-                    {
-                        question: '¿Cuál es la función principal de la mitocondria en la célula eucariota?',
-                        options: ['Sintetizar proteínas', 'Generar la energía celular (ATP)', 'Almacenar agua', 'Proteger el ADN'],
-                        correct: 1,
-                        explanation: 'La mitocondria es el organelo encargado de la respiración celular y la obtención de energía en forma de ATP.'
-                    },
-                    {
-                        question: '¿Cómo se le denomina al paso del estado sólido al estado líquido de la materia?',
-                        options: ['Evaporación', 'Fusión', 'Condensación', 'Solidificación'],
-                        correct: 1,
-                        explanation: 'La fusión es el proceso físico mediante el cual un cuerpo en estado sólido pasa al estado líquido por aumento de temperatura.'
-                    }
+                    { question: '¿Cuál es la función principal de la mitocondria?', options: ['Sintetizar proteínas', 'Generar energía (ATP)', 'Almacenar agua', 'Proteger el ADN'], correct: 1, explanation: 'La mitocondria realiza la respiración celular para producir la energía que la célula necesita.' },
+                    { question: '¿Cómo se denomina el cambio directo de estado sólido a líquido?', options: ['Evaporación', 'Fusión', 'Condensación', 'Solidificación'], correct: 1, explanation: 'La fusión es el paso del estado sólido al líquido por aumento de calor.' },
+                    { question: '¿Qué órgano del sistema digestivo absorbe la mayoría de los nutrientes?', options: ['Estómago', 'Intestino Delgado', 'Esófago', 'Intestino Grueso'], correct: 1, explanation: 'El intestino delgado posee vellosidades especializadas para absorber los nutrientes a la sangre.' },
+                    { question: '¿Qué tipo de organismos producen su propio alimento mediante fotosíntesis?', options: ['Heterótrofos', 'Autótrofos', 'Descomponedores', 'Consumidores secundarios'], correct: 1, explanation: 'Los autótrofos (como las plantas) sintetizan materia orgánica a partir de la luz.' },
+                    { question: '¿Cuál es el gas indispensable para la respiración aeróbica de los seres humanos?', options: ['Dióxido de carbono', 'Oxígeno', 'Nitrógeno', 'Metano'], correct: 1, explanation: 'El oxígeno (O2) es esencial para la oxidación de la glucosa en la célula.' },
+                    { question: '¿Cuál es la unidad básica y estructural de todos los seres vivos?', options: ['El tejido', 'El órgano', 'La célula', 'La molécula'], correct: 2, explanation: 'La célula es la unidad biológica mínima funcional de la vida.' },
+                    { question: '¿Qué fuerza atrae a los objetos hacia el centro de la Tierra?', options: ['Magnetismo', 'Gravedad', 'Fricción', 'Tensión'], correct: 1, explanation: 'La fuerza de gravedad es la aceleración que ejerce la masa terrestre sobre los objetos.' },
+                    { question: '¿En qué estado de la materia las partículas están fuertemente unidas?', options: ['Líquido', 'Gaseoso', 'Sólido', 'Plasma'], correct: 2, explanation: 'En el estado sólido las fuerzas de cohesión intermoleculares son elevadas.' },
+                    { question: '¿Qué pigmento verde captura la energía solar en las plantas?', options: ['Melanina', 'Clorofila', 'Caroteno', 'Hemoglobina'], correct: 1, explanation: 'La clorofila presente en los cloroplastos absorbe la luz para la fotosíntesis.' },
+                    { question: '¿Cómo se le llama al conjunto de seres vivos de diferentes especies que interactúan en un lugar?', options: ['Población', 'Comunidad o Ecosistema', 'Especie', 'Individuo'], correct: 1, explanation: 'La comunidad junto a los factores abióticos conforman el ecosistema.' }
                 ]
             },
             {
@@ -711,15 +776,19 @@
                 name: 'Ciencias Sociales',
                 icon: 'globe',
                 color: 'amber',
-                description: 'Estudia las civilizaciones antiguas, geografía física y organización social.',
-                topics: ['Geografía', 'Historia', 'Civilizaciones', 'Sociedad', 'Economía'],
+                description: 'Geografía física continental, Edad Media, Feudalismo y Democracia.',
+                topics: ['Geografía física', 'Caída del Imperio Romano', 'El Feudalismo', 'El Islam en la Edad Media', 'Organización territorial'],
                 questions: [
-                    {
-                        question: '¿Qué gran imperio de la antigüedad construyó el Coliseo y expandió su dominio por el Mediterráneo?',
-                        options: ['Imperio Griego', 'Imperio Romano', 'Imperio Egipcio', 'Imperio Maya'],
-                        correct: 1,
-                        explanation: 'El Imperio Romano dominó la cuenca del Mediterráneo y dejó monumentos icónicos como el Coliseo Romano.'
-                    }
+                    { question: '¿Qué gran imperio de la antigüedad construyó el Coliseo y se expandió por el Mediterráneo?', options: ['Griego', 'Romano', 'Egipcio', 'Maya'], correct: 1, explanation: 'El Imperio Romano dominó la cuenca del Mediterráneo durante siglos.' },
+                    { question: '¿En qué periodo histórico se desarrolló principalmente el sistema socioeconómico del Feudalismo?', options: ['Edad Antigua', 'Edad Media', 'Edad Moderna', 'Edad Contemporánea'], correct: 1, explanation: 'El feudalismo caracterizó la Europa medieval entre los siglos IX y XV.' },
+                    { question: '¿Cuál es el río más caudaloso y largo del mundo situado en América del Sur?', options: ['Nilo', 'Amazonas', 'Misisipi', 'Danubio'], correct: 1, explanation: 'El Amazonas cruza Suramérica y es el más caudaloso del planeta.' },
+                    { question: '¿En qué año ocurrió la caída de Constantinopla que marcó el fin de la Edad Media?', options: ['1492', '1453', '476', '1789'], correct: 1, explanation: 'En 1453 los otomanos conquistaron Constantinopla marcando el fin del Imperio Bizantino.' },
+                    { question: '¿Qué cordillera recorre la parte occidental de América del Sur?', options: ['Los Alpes', 'Los Andes', 'Los Himalaya', 'Montañas Rocosas'], correct: 1, explanation: 'La cordillera de los Andes atraviesa siete países suramericanos.' },
+                    { question: '¿Qué libro sagrado contiene las enseñanzas de la religión Islámica?', options: ['La Biblia', 'El Corán', 'La Torá', 'Los Vedas'], correct: 1, explanation: 'El Corán es el libro sagrado del Islam revelado al profeta Mahoma.' },
+                    { question: '¿Cuál es el continente más extenso del planeta Tierra?', options: ['África', 'América', 'Asia', 'Europa'], correct: 2, explanation: 'Asia es el continente más grande tanto en superficie como en población.' },
+                    { question: '¿Quiénes eran los vasallos en la sociedad feudal?', options: ['Reyes', 'Campesinos o nobles que juraban fidelidad a un señor', 'Esclavos', 'Mercaderes'], correct: 1, explanation: 'Rendían homenaje y fidelidad a un señor feudal a cambio de protección y tierras.' },
+                    { question: '¿Qué rama del poder público se encarga de elaborar las leyes?', options: ['Ejecutiva', 'Legislativa', 'Judicial', 'Electoral'], correct: 1, explanation: 'La rama legislativa (Congreso/Parlamento) crea y modifica las leyes.' },
+                    { question: '¿Qué eran los gremios en la época medieval?', options: ['Asociaciones de artesanos y comerciantes', 'Ejércitos del rey', 'Órdenes religiosas', 'Grupos de campesinos'], correct: 0, explanation: 'Controlaban los oficios, precios y calidad de productos en los burgos.' }
                 ]
             },
             {
@@ -727,15 +796,19 @@
                 name: 'Inglés',
                 icon: 'languages',
                 color: 'rose',
-                description: 'Fortalece tu vocabulario y tiempos gramaticales como Present Simple y Past Simple.',
-                topics: ['Present Simple', 'Past Simple', 'Vocabulary', 'Reading', 'Grammar'],
+                description: 'Grammar, vocabulary, Present Simple, Past Simple and basic conversations.',
+                topics: ['Present Simple vs Continuous', 'Past Simple regular/irregular', 'Vocabulary & Reading', 'Prepositions of place', 'Modal verbs'],
                 questions: [
-                    {
-                        question: 'Choose the correct sentence in Present Simple:',
-                        options: ['She write a letter.', 'She writes a letter.', 'She writing a letter.', 'She written a letter.'],
-                        correct: 1,
-                        explanation: 'In Present Simple with third-person singular (She/He/It), we add an "s" or "es" to the main verb: "writes".'
-                    }
+                    { question: 'Choose the correct sentence in Present Simple:', options: ['She write a letter.', 'She writes a letter.', 'She writing a letter.', 'She written a letter.'], correct: 1, explanation: 'In Present Simple third person (She/He/It) requires verb ending -s.' },
+                    { question: 'What is the past simple form of the verb "GO"?', options: ['Goed', 'Went', 'Gone', 'Going'], correct: 1, explanation: '"Go" is an irregular verb. Its past form is "went".' },
+                    { question: 'Which word is a preposition of place?', options: ['Quickly', 'Under', 'Because', 'Running'], correct: 1, explanation: '"Under" indicates location (e.g., under the table).' },
+                    { question: 'Complete: "They ______ playing soccer in the park right now."', options: ['is', 'are', 'am', 'be'], correct: 1, explanation: 'Plural subject "They" takes "are" in Present Continuous.' },
+                    { question: 'What is the opposite of the adjective "Heavy"?', options: ['Light', 'Strong', 'Hard', 'Dark'], correct: 0, explanation: 'The opposite of heavy (pesado) is light (ligero).' },
+                    { question: 'Which question word is used to ask about TIME?', options: ['Where', 'When', 'Who', 'Why'], correct: 1, explanation: '"When" asks about time or date.' },
+                    { question: 'Choose the correct sentence:', options: ['I have 12 years old.', 'I am 12 years old.', 'I has 12 years old.', 'I do 12 years old.'], correct: 1, explanation: 'In English, age is expressed using the verb "to be" (I am...).' },
+                    { question: 'What is the plural form of the noun "Child"?', options: ['Childs', 'Children', 'Childrens', 'Childes'], correct: 1, explanation: '"Child" is irregular; its plural is "children".' },
+                    { question: 'Complete: "She is ______ student in the classroom."', options: ['the tallest', 'taller', 'tall', 'more tall'], correct: 0, explanation: 'Superlative form for short adjectives uses "the + adjective + -est".' },
+                    { question: 'What does the modal verb "CAN" express?', options: ['Obligation', 'Ability or permission', 'Past action', 'Future event'], correct: 1, explanation: '"Can" is used to express ability, capability or ask permission.' }
                 ]
             },
             {
@@ -743,15 +816,19 @@
                 name: 'Tecnología e Informática',
                 icon: 'laptop',
                 color: 'cyan',
-                description: 'Conoce sobre seguridad digital, fundamentos de hardware, software y algoritmos.',
-                topics: ['Hardware', 'Software', 'Internet', 'Seguridad digital', 'Algoritmos'],
+                description: 'Conceptos de hardware, software, algoritmos, internet y ciudadanía digital.',
+                topics: ['Hardware y Periféricos', 'Sistemas operativos', 'Pensamiento algorítmico', 'Seguridad digital', 'Ciberseguridad'],
                 questions: [
-                    {
-                        question: '¿Cuál de los siguientes elementos corresponde a un dispositivo de entrada de Hardware?',
-                        options: ['Monitor', 'Impresora', 'Teclado', 'Altavoz'],
-                        correct: 2,
-                        explanation: 'El teclado es un dispositivo de entrada porque permite introducir datos e instrucciones al computador.'
-                    }
+                    { question: '¿Cuál de los siguientes es un dispositivo de entrada de Hardware?', options: ['Monitor', 'Impresora', 'Teclado', 'Altavoz'], correct: 2, explanation: 'El teclado introduce datos al sistema informático.' },
+                    { question: '¿Qué es un algoritmo?', options: ['Un componente físico', 'Una serie paso a paso de instrucciones lógicas', 'Un tipo de virus', 'Una pantalla táctil'], correct: 1, explanation: 'Un algoritmo es una secuencia finita y ordenada de pasos para resolver un problema.' },
+                    { question: '¿Qué función cumple la Memoria RAM en una computadora?', options: ['Almacenamiento permanente', 'Memoria de trabajo temporal y rápida', 'Imprimir documentos', 'Proteger contra el fuego'], correct: 1, explanation: 'La memoria RAM almacena temporalmente los datos que el procesador necesita al momento.' },
+                    { question: '¿Cuál de estos programas es un Sistema Operativo?', options: ['Microsoft Word', 'Windows 11', 'Google Chrome', 'Photoshop'], correct: 1, explanation: 'Windows, macOS y Linux son sistemas operativos que administran el hardware.' },
+                    { question: '¿Qué significa la sigla WWW en las direcciones web?', options: ['World Wide Web', 'World Wide Word', 'Wide World Web', 'Web World Wide'], correct: 0, explanation: 'World Wide Web es la red informática mundial accesible por internet.' },
+                    { question: '¿Qué medida de seguridad ayuda a proteger tus cuentas digitales?', options: ['Usar "123456" como clave', 'Usar contraseñas seguras y verificación en dos pasos', 'Compartir tu clave con amigos', 'No cerrar sesión nunca'], correct: 1, explanation: 'Contraseñas complejas y 2FA evitan accesos no autorizados.' },
+                    { question: '¿Qué es el Software?', options: ['La parte física del equipo', 'El conjunto de programas, instrucciones y datos digitales', 'El cable de alimentación', 'La carcasa de la torre'], correct: 1, explanation: 'El software comprende la parte lógica no tangible de los sistemas informáticos.' },
+                    { question: '¿Cuál de los siguientes es un navegador web?', options: ['Mozilla Firefox', 'Microsoft Excel', 'PowerPoint', 'Calculator'], correct: 0, explanation: 'Firefox es una aplicación para explorar y navegar páginas en la web.' },
+                    { question: '¿Qué es el Phishing?', options: ['Un juego en línea', 'Una técnica de engaño para robar datos personales', 'Un antivirus gratuito', 'Una marca de monitores'], correct: 1, explanation: 'El Phishing suplanta la identidad de empresas para estafar a usuarios.' },
+                    { question: '¿Qué extensión suelen tener los documentos de texto enriquecido o Word?', options: ['.mp3', '.docx', '.png', '.exe'], correct: 1, explanation: '.docx es el formato estándar de documentos de procesamiento de texto Word.' }
                 ]
             },
             {
@@ -759,27 +836,153 @@
                 name: 'Educación Artística',
                 icon: 'palette',
                 color: 'indigo',
-                description: 'Aprende la teoría del color, principios de composición y expresión cultural.',
-                topics: ['Color', 'Dibujo', 'Composición', 'Arte y cultura'],
+                description: 'Teoría del color, principios de composición, dibujo técnico y apreciación cultural.',
+                topics: ['Círculo cromático', 'Luz y sombra', 'Composición visual', 'Historia del arte', 'Expresión plástica'],
                 questions: [
-                    {
-                        question: '¿Cuáles son los tres colores primarios en el modelo de color pigmento tradicional?',
-                        options: ['Verde, Naranja y Violeta', 'Amarillo, Azul y Rojo', 'Negro, Blanco y Gris', 'Cyan, Magenta y Amarillo'],
-                        correct: 1,
-                        explanation: 'Los colores primarios tradicionales son el Amarillo, el Azul y el Rojo, ya que no se pueden obtener mediante la mezcla de otros.'
-                    }
+                    { question: '¿Cuáles son los colores primarios en la mezcla pigmento tradicional?', options: ['Verde, Naranja y Violeta', 'Amarillo, Azul y Rojo', 'Negro, Blanco y Gris', 'Cyan y Magenta'], correct: 1, explanation: 'Son colores puros que no se obtienen mediante mezclas previas.' },
+                    { question: '¿Qué color secundario se obtiene al mezclar Azul y Amarillo?', options: ['Rojo', 'Verde', 'Violeta', 'Naranja'], correct: 1, explanation: 'Azul + Amarillo = Verde.' },
+                    { question: '¿Qué técnica genera la ilusión de profundidad y tres dimensiones sobre un plano bidimensional?', options: ['Perspectiva', 'Caligrafía', 'Bordado', 'Estampado'], correct: 0, explanation: 'La perspectiva proyecta objetos reduciendo su tamaño hacia puntos de fuga.' },
+                    { question: '¿Cómo se le denomina a la ausencia de luz en la teoría cromática?', options: ['Blanco', 'Negro', 'Sombra', 'Brillo'], correct: 1, explanation: 'En la teoría de la luz, el negro es la ausencia total de luz visible.' },
+                    { question: '¿Qué elemento visual se define como el recorrido continuo de un punto en el espacio?', options: ['La Línea', 'El Plano', 'El Volumen', 'La Textura'], correct: 0, explanation: 'La línea es el elemento básico primario del dibujo.' },
+                    { question: '¿Qué es el claroscuro en las artes plásticas?', options: ['Pintar usando solo colores fríos', 'El contraste fuerte entre luz y sombra para dar volumen', 'Una escultura de madera', 'Pintar al aire libre'], correct: 1, explanation: 'El claroscuro modela formas volumétricas mediante contrastes tonales.' },
+                    { question: '¿Cuáles son los colores fríos en el círculo cromático?', options: ['Rojo, Amarillo y Naranja', 'Azul, Verde y Violeta', 'Blanco, Dorado y Plateado', 'Marrón y Beige'], correct: 1, explanation: 'Los tonos azules y verdosos evocan sensación de frío o calma.' },
+                    { question: '¿Qué artista famoso pintó la célebre obra "La Gioconda" (Mona Lisa)?', options: ['Vincent van Gogh', 'Leonardo da Vinci', 'Pablo Picasso', 'Claude Monet'], correct: 1, explanation: 'Leonardo da Vinci creó la Mona Lisa a inicios del siglo XVI.' },
+                    { question: '¿Qué es la simetría en la composición de una obra?', options: ['Desequilibrio total', 'Correspondencia exacta en forma y posición a ambos lados de un eje', 'Usar pintura de agua', 'Falta de color'], correct: 1, explanation: 'La simetría distribuye elementos de forma idéntica respecto al eje central.' },
+                    { question: '¿Qué técnica artística consiste en pegar recortes de papel, fotos y materiales sobre un lienzo?', options: ['Mosaico', 'Collage', 'Fresco', 'Acuarela'], correct: 1, explanation: 'El collage ensambla diversos elementos para conformar una imagen.' }
+                ]
+            },
+            {
+                id: 'pe',
+                name: 'Educación Física',
+                icon: 'activity',
+                color: 'emerald',
+                description: 'Acondicionamiento físico, capacidades motrices, juegos colectivos e higiene.',
+                topics: ['Resistencia y fuerza', 'Reglamento deportivo', 'Hábitos saludables', 'Coordinación motriz', 'Primeros auxilios'],
+                questions: [
+                    { question: '¿Cuál es la frecuencia cardíaca aproximada en reposo de un joven saludable?', options: ['20-40 ppm', '60-100 ppm', '150-200 ppm', '120-160 ppm'], correct: 1, explanation: 'En estado de reposo oscila normalmente entre 60 y 100 pulsaciones por minuto.' },
+                    { question: '¿Cuál de las siguientes es una capacidad física condicional básica?', options: ['Inteligencia', 'Flexibilidad', 'Memoria', 'Puntería'], correct: 1, explanation: 'Fuerza, resistencia, velocidad y flexibilidad son capacidades condicionales.' },
+                    { question: '¿Por qué es fundamental realizar un calentamiento previo al ejercicio intenso?', options: ['Para sudar la ropa', 'Para prevenir lesiones y preparar músculos y corazón', 'Para aburrirse', 'Para perder el tiempo'], correct: 1, explanation: 'Aumenta la temperatura muscular y la lubricación articular evitando desgarros.' },
+                    { question: '¿Cuántos jugadores por equipo están en cancha en un partido de Voleibol?', options: ['5', '6', '11', '7'], correct: 1, explanation: 'Cada equipo de voleibol juega con 6 atletas en cancha.' },
+                    { question: '¿Qué macronutriente es la fuente primaria de energía rápida para el cuerpo?', options: ['Carbohidratos', 'Proteínas', 'Vitaminas', 'Minerales'], correct: 0, explanation: 'Los carbohidratos se transforman en glucosa suministrando energía inmediata.' },
+                    { question: '¿Qué significa la sigla IMC en evaluación de salud física?', options: ['Índice de Masa Corporal', 'Intensidad Músculo Cardíaca', 'Integración Motriz Corporal', 'Índice Muscular Cardio'], correct: 0, explanation: 'El IMC relaciona la masa (kg) y la estatura (m²) de la persona.' },
+                    { question: '¿Qué cualidad motriz permite cambiar de dirección rápidamente con control?', options: ['Fuerza máxima', 'Agilidad', 'Flexibilidad', 'Equilibrio estático'], correct: 1, explanation: 'La agilidad combina velocidad, equilibrio y coordinación para cambiar de rumbo.' },
+                    { question: '¿Qué beneficio aporta mantenerse hidratado con agua durante la actividad física?', options: ['Aumenta el cansancio', 'Regula la temperatura corporal y evita calambres', 'Produce mareos', 'Sube la fiebre'], correct: 1, explanation: 'El agua repone los líquidos perdidos por la sudoración y mantiene el rendimiento.' },
+                    { question: '¿En qué deporte se utiliza la tarjeta roja y amarilla para sancionar faltas?', options: ['Baloncesto', 'Fútbol', 'Natación', 'Tenis'], correct: 1, explanation: 'El fútbol utiliza estas tarjetas como amonestación y expulsión.' },
+                    { question: '¿Cuál es el tiempo mínimo de sueño nocturno recomendado para estudiantes de séptimo?', options: ['4 horas', '8 a 10 horas', '12 horas', '5 horas'], correct: 1, explanation: 'El descanso de 8-10 horas garantiza la recuperación cerebral y muscular.' }
+                ]
+            },
+            {
+                id: 'ethics',
+                name: 'Ética y Valores',
+                icon: 'heart',
+                color: 'rose',
+                description: 'Dilemas morales, convivencia pacífica, empatía, derechos humanos y respeto.',
+                topics: ['Dignidad humana', 'Empatía y respeto', 'Resolución pacífica de conflictos', 'Toma de decisiones', 'Valores ciudadanos'],
+                questions: [
+                    { question: '¿Qué es la empatía?', options: ['Juzgar a los demás rápidamente', 'Capacidad de ponerse en el lugar del otro y comprender sus sentimientos', 'Ignorar los problemas ajenos', 'Competir con los compañeros'], correct: 1, explanation: 'La empatía permite percibir y comprender las emociones de otras personas.' },
+                    { question: '¿Qué valor se ejerce al aceptar las diferencias y opiniones de los demás?', options: ['Tolerancia y Respeto', 'Egoísmo', 'Arrogancia', 'Indiferencia'], correct: 0, explanation: 'El respeto y la tolerancia promueven una convivencia incluyente y pacífica.' },
+                    { question: '¿Qué es un dilema moral?', options: ['Un ejercicio matemático', 'Una situación donde se debe elegir entre dos opciones con implicaciones éticas', 'Una regla de juego', 'Un premio de conducta'], correct: 1, explanation: 'Pone a prueba nuestros principios al requerir elegir el camino correcto.' },
+                    { question: '¿Qué principio establece que todas las personas merecen trato digno sin discriminación?', options: ['Dignidad Humana', 'Preferencia social', 'Individualismo', 'Autoritarismo'], correct: 0, explanation: 'La dignidad es un valor intrínseco e inalienable de todo ser humano.' },
+                    { question: '¿Cuál es la forma más constructiva de resolver un conflicto de convivencia?', options: ['El uso de la fuerza física', 'El diálogo, la escucha activa y la mediación', 'La venganza', 'El silencio definitivo'], correct: 1, explanation: 'El diálogo permite llegar a acuerdos ganar-ganar sin violencia.' },
+                    { question: '¿Qué significa actuar con responsabilidad?', options: ['Culpar a otros de mis errores', 'Asumir las consecuencias de mis acciones y decisiones', 'Hacer lo que sea sin pensar', 'Obedecer solo cuando me ven'], correct: 1, explanation: 'La responsabilidad implica responder conscientemente por nuestros actos.' },
+                    { question: '¿Qué es la honestidad?', options: ['Decir la verdad y actuar con transparencia y justicia', 'Engañar para obtener ventajas', 'Copiar en los exámenes', 'Guardar secretos dañinos'], correct: 0, explanation: 'Es la virtud de ser auténtico, sincero y transparente.' },
+                    { question: '¿Qué es la solidaridad?', options: ['Brindar ayuda desinteresada a quien lo necesita', 'Exigir dinero a cambio de favores', 'Pensar solo en el bienestar propio', 'Competir de forma desleal'], correct: 0, explanation: 'Es el apoyo mutuo ante situaciones desafiantes o vulnerables.' },
+                    { question: '¿Qué documento internacional consagra los derechos fundamentales de todas las personas?', options: ['La Declaración Universal de los Derechos Humanos', 'El reglamento interno', 'El código de comercio', 'La guía telefónica'], correct: 0, explanation: 'Adoptada por la ONU en 1948 para garantizar la dignidad global.' },
+                    { question: '¿Qué es la justicia?', options: ['Dar a cada quien lo que le corresponde según el derecho y la equidad', 'Beneficiar solo a los amigos', 'Castigar sin pruebas', 'Ignorar las leyes'], correct: 0, explanation: 'Busca el equilibrio, el bien común y la imparcialidad.' }
+                ]
+            },
+            {
+                id: 'religion',
+                name: 'Religión y Educación Fe',
+                icon: 'sun',
+                color: 'amber',
+                description: 'Diversidad religiosa, historia de las tradiciones espirituales y sentido de vida.',
+                topics: ['Grandes religiones del mundo', 'Valores espirituales', 'Respeto a la libertad de culto', 'Trascendencia humana'],
+                questions: [
+                    { question: '¿Qué es la libertad de culto consagrada en la Constitución?', options: ['Obligación de profesar una sola fe', 'El derecho de cada persona a elegir y practicar libremente su religión', 'Prohibir todas las iglesias', 'Pagar impuestos religiosos'], correct: 1, explanation: 'Garantiza que nadie sea perseguido o discriminado por sus creencias religiosas.' },
+                    { question: '¿Cuáles son las tres grandes religiones monoteístas nacidas en Medio Oriente?', options: ['Judaísmo, Cristianismo e Islam', 'Hinduismo, Budismo y Taoísmo', 'Ateísmo, Agnosticismo y Deísmo', 'Sintoísmo, Jainismo y Sikhismo'], correct: 0, explanation: 'Comparten la creencia en un único Dios creador y raíces abrahámicas.' },
+                    { question: '¿Qué valor promueve el concepto de la "Regla de Oro" presente en múltiples religiones?', options: ['Trata a los demás como te gustaría ser tratado', 'Haz valer tu fuerza', 'Acumula riquezas', 'Desconfía de los extraños'], correct: 0, explanation: 'Es el principio ético universal de la reciprocidad humana.' },
+                    { question: '¿Qué figura histórica central es el fundamento del Cristianismo?', options: ['Moisés', 'Jesús de Nazaret', 'Buda', 'Confucio'], correct: 1, explanation: 'Jesús de Nazaret es la figura central del Nuevo Testamento e Iglesia.' },
+                    { question: '¿Qué es la diversidad religiosa?', options: ['El reconocimiento y respeto de las múltiples confesiones espirituales', 'Una guerra entre credos', 'Un conjunto de supersticiones', 'Una moda pasajera'], correct: 0, explanation: 'Promueve la convivencia armónica entre personas con diferentes fe.' },
+                    { question: '¿Qué principio ético enseña la parábola del "Buen Samaritano"?', options: ['La compasión y ayuda al prójimo sin distinción', 'La importancia del dinero', 'El orgullo personal', 'La obediencia ciega'], correct: 0, explanation: 'Enseña el amor incondicional y la ayuda activa hacia quien sufre.' },
+                    { question: '¿Cuál es el día de descanso y oración tradicional en el Judaísmo?', options: ['Domingo', 'Sábado (Shabbat)', 'Viernes', 'Lunes'], correct: 1, explanation: 'El Shabbat se observa desde el atardecer del viernes hasta el sábado.' },
+                    { question: '¿Qué significa el término "Monoteísmo"?', options: ['Creencia en un solo Dios', 'Creencia en muchos dioses', 'Sin creencia religiosa', 'Culto a la naturaleza'], correct: 0, explanation: 'Proviene del griego "monos" (único) y "theos" (Dios).' },
+                    { question: '¿Qué actitud fortalece la cultura de paz entre comunidades de distinta fe?', options: ['El ecumenismo y el diálogo interreligioso', 'El fanatismo', 'El desprecio', 'La imposición forzada'], correct: 0, explanation: 'El diálogo abierto construye puentes de comprensión y fraternidad.' },
+                    { question: '¿Qué es el sentido de trascendencia en el ser humano?', options: ['La búsqueda de propósito, valores y vida más allá de lo material', 'Tener automóviles', 'Dormir muchas horas', 'Viajar en avión'], correct: 0, explanation: 'Reflexiona sobre el significado profundo de la existencia.' }
+                ]
+            },
+            {
+                id: 'philosophy',
+                name: 'Filosofía e Introducción al Pensamiento',
+                icon: 'compass',
+                color: 'purple',
+                description: 'Pensamiento crítico, lógicos, asombro, argumentos y filosofos griegos.',
+                topics: ['El asombro filosófico', 'Sócrates, Platón y Aristóteles', 'Argumentos y falacias', 'Pensamiento crítico'],
+                questions: [
+                    { question: '¿Cuál es el significado etimológico de la palabra "Filosofía"?', options: ['Amor por la sabiduría', 'Estudio de los números', 'Búsqueda del poder', 'Ciencia de las plantas'], correct: 0, explanation: 'Proviene del griego "Philos" (amor) y "Sophia" (sabiduría).' },
+                    { question: '¿Quién es famoso por la frase "Sólo sé que nada sé"?', options: ['Platón', 'Sócrates', 'Aristóteles', 'Descartes'], correct: 1, explanation: 'Sócrates expresaba con ello su humildad intelectual para iniciar el aprendizaje.' },
+                    { question: '¿Qué es el pensamiento crítico?', options: ['Criticar de forma destructiva a las personas', 'Analizar y evaluar objetivamente la validez de los argumentos y afirmaciones', 'Memorizar sin cuestionar', 'Aceptar todo lo que dicen en internet'], correct: 1, explanation: 'Permite dudar razonablemente y buscar evidencias fundamentadas.' },
+                    { question: '¿Qué filósofo griego fue maestro de Alejandro Magno y escribió sobre lógica y biología?', options: ['Aristóteles', 'Tales de Mileto', 'Pitágoras', 'Heráclito'], correct: 0, explanation: 'Aristóteles realizó aportes trascendentales a múltiples ciencias y lógica.' },
+                    { question: '¿Qué es una falacia en la argumentación?', options: ['Un argumento lógicamente válido', 'Un razonamiento engañoso o falso que parece verdadero', 'Una verdad matemática', 'Una pregunta sin respuesta'], correct: 1, explanation: 'Una falacia es un error de razonamiento que invalida la conclusión.' },
+                    { question: '¿En qué país de la antigüedad nació la filosofía occidental?', options: ['Egipto', 'Grecia', 'China', 'Roma'], correct: 1, explanation: 'Surgió en las polis griegas de Jonia hacia el siglo VI a.C.' },
+                    { question: '¿Qué es el "Mito de la Caverna" alegorizado por Platón?', options: ['Una historia de terror', 'Una explicación sobre el paso del conocimiento engañoso de los sentidos a la verdad', 'Un mapa geográfico', 'Un poema de amor'], correct: 1, explanation: 'Representa cómo el conocimiento nos libera de la ignorancia.' },
+                    { question: '¿Qué pregunta es de carácter filosófico?', options: ['¿A qué hora pasa el autobús?', '¿Qué es la justicia y qué hace que una vida sea buena?', '¿Cuántos metros tiene un kilómetro?', '¿Cuál es la capital de Italia?'], correct: 1, explanation: 'Las preguntas filosóficas indagan por las causas ultimas y principios éticos.' },
+                    { question: '¿Qué es la Lógica?', options: ['El estudio de las leyes del pensamiento correcto y del razonamiento válido', 'Una danza griega', 'El estudio de las estrellas', 'Un juego de cartas'], correct: 0, explanation: 'Analiza la estructura formal de los argumentos.' },
+                    { question: '¿Qué es la Duda Metódica?', options: ['Cuestionar sistemáticamente los conocimientos para encontrar certezas sólidas', 'No creer en nada jamás', 'Miedo a tomar exámenes', 'Olvidar el estudio'], correct: 0, explanation: 'Herramienta filosófica promovida por Descartes para hallar la verdad.' }
+                ]
+            },
+            {
+                id: 'music',
+                name: 'Música y Expresión Sonora',
+                icon: 'music',
+                color: 'cyan',
+                description: 'Lenguaje musical, ritmo, solfeo, instrumentos y apreciación sonora.',
+                topics: ['Elementos de la música', 'Notas musicales y pentagrama', 'Cualidades del sonido', 'Familias de instrumentos'],
+                questions: [
+                    { question: '¿Cuáles son los tres elementos fundamentales que conforman la música?', options: ['Melodía, Armonía y Ritmo', 'Luz, Sombra y Color', 'Texto, Guion y Escena', 'Letras, Acentos y Puntos'], correct: 0, explanation: 'Melodía (sucesión de notas), Armonía (simultaneidad) y Ritmo (tiempo).' },
+                    { question: '¿Cuántas líneas paralelas tiene un pentagrama tradicional?', options: ['4', '5', '6', '7'], correct: 1, explanation: 'El pentagrama consta de 5 líneas y 4 espacios.' },
+                    { question: '¿Cuál es la cualidad del sonido que nos permite diferenciar un violín de un piano tocando la misma nota?', options: ['Intensidad', 'Timbre', 'Tono o Altura', 'Duración'], correct: 1, explanation: 'El timbre es el "color" característico propio de cada instrumento o voz.' },
+                    { question: '¿Cuál es la figura musical que equivale a 4 tiempos en un compás de 4/4?', options: ['Negra', 'Redonda', 'Blanca', 'Corchea'], correct: 1, explanation: 'La redonda dura 4 tiempos enteros.' },
+                    { question: '¿Qué clave musical se utiliza habitualmente para registrar sonidos agudos en el pentagrama?', options: ['Clave de Sol', 'Clave de Fa', 'Clave de Do', 'Clave de Neutra'], correct: 0, explanation: 'La Clave de Sol ubica la nota Sol en la segunda línea.' },
+                    { question: '¿A qué familia instrumental pertenece la Flauta Traversa?', options: ['Cuerda frotada', 'Viento Madera', 'Percusión', 'Viento Metal'], correct: 1, explanation: 'A nivel orquestal se clasifica en Viento Madera por su mecanismo de llaves.' },
+                    { question: '¿Qué es el Tempo en una obra musical?', options: ['El volumen de los parlantes', 'La velocidad o rapidez del pulso musical', 'La afinación del instrumento', 'El costo del concierto'], correct: 1, explanation: 'El tempo marca la velocidad de la música (ej. Allegro, Andante).' },
+                    { question: '¿Cuál es el instrumento de percusión afinado?', options: ['El Xilófono', 'El Bombo', 'El Triángulo', 'Las Maracas'], correct: 0, explanation: 'El xilófono produce notas con alturas o frecuencias definidas.' },
+                    { question: '¿Qué es un Acorde?', options: ['El sonido de una sola nota', 'La emisión simultánea de tres o más notas distintas', 'El silencio absoluto', 'El aplauso del público'], correct: 1, explanation: 'Los acordes constituyen la base armónica de la música.' },
+                    { question: '¿Cuál es el orden ascendente estándar de las 7 notas musicales naturales?', options: ['Do, Re, Mi, Fa, Sol, La, Si', 'La, Si, Do, Re, Mi, Fa, Sol', 'Sol, Fa, Mi, Re, Do, Si, La', 'Do, Mi, Sol, Re, Fa, La, Si'], correct: 0, explanation: 'Es la escala diatónica natural de Do mayor.' }
+                ]
+            },
+            {
+                id: 'economics',
+                name: 'Ciencias Económicas y Financieras',
+                icon: 'dollar-sign',
+                color: 'emerald',
+                description: 'Presupuesto personal, ahorro, oferta y demanda, consumo responsable y dinero.',
+                topics: ['El presupuesto personal', 'Ahorro e inversión', 'Oferta y Demanda', 'Bancos y sistema financiero', 'Consumo responsable'],
+                questions: [
+                    { question: '¿Qué es un presupuesto?', options: ['Un juego de azar', 'Una planificación de los ingresos y gastos proyectados en un tiempo', 'Un préstamo del banco', 'Una multa de tránsito'], correct: 1, explanation: 'Permite administrar responsablemente los recursos financieros.' },
+                    { question: '¿Qué diferencia a una "Necesidad" de un "Deseo"?', options: ['No hay diferencia', 'La necesidad es indispensable para sobrevivir (ej. alimento) y el deseo es un gusto no vital', 'El deseo es más barato', 'La necesidad se puede aplazar siempre'], correct: 1, explanation: 'Distinguir entre ambas es clave para el ahorro y finanzas sanas.' },
+                    { question: '¿Qué sucede con el precio de un producto cuando la Oferta es muy baja y la Demanda es muy alta?', options: ['El precio tiende a subir', 'El precio baja a cero', 'El precio permanece igual', 'Se regala el producto'], correct: 0, explanation: 'Al haber escasez y muchos compradores, el precio aumenta por competencia.' },
+                    { question: '¿Qué es el Ahorro?', options: ['Gastar todo el dinero disponible', 'Guardar una parte de los ingresos presentes para uso o emergencia futura', 'Pedir prestado al banco', 'Comprar cosas innecesarias'], correct: 1, explanation: 'El ahorro asegura respaldo financiero ante eventos inesperados.' },
+                    { question: '¿Qué entidad emite la moneda oficial y controla la política monetaria en un país?', options: ['Un supermercado', 'El Banco Central / Banco de la República', 'Una escuela pública', 'Una empresa privada'], correct: 1, explanation: 'El Banco Central emite los billetes y vela por el valor de la moneda.' },
+                    { question: '¿Qué es el Interés bancario al solicitar un crédito o préstamo?', options: ['Un regalo de la entidad', 'El costo adicional pagado por usar dinero prestado durante un tiempo', 'El salario del cajero', 'Un impuesto de la ciudad'], correct: 1, explanation: 'Es el porcentaje que cobra el acreedor por prestar su capital.' },
+                    { question: '¿Qué significa practicar el Consumo Responsable?', options: ['Comprar todo lo que sale en publicidad', 'Evaluar el impacto ambiental, social y económico antes de comprar algo', 'Gastar sin mirar los precios', 'Tirar a la basura elementos utilizables'], correct: 1, explanation: 'Fomenta compras inteligentes y amigables con el medio ambiente.' },
+                    { question: '¿Qué es la Inflación?', options: ['La disminución de la población', 'El aumento generalizado y sostenido de los precios de bienes y servicios', 'El crecimiento de los árboles', 'El regalo de bonos'], correct: 1, explanation: 'La inflación reduce el poder adquisitivo de la moneda local.' },
+                    { question: '¿Qué son los Gastos Fijos en un hogar?', options: ['Gastos eventuales como ir al cine', 'Pagos obligatorios periódicos de monto similar (ej. arriendo, servicios públicos)', 'Comprar juguetes', 'Ganancias inesperadas'], correct: 1, explanation: 'Son compromisos ineludibles recurrentes mes a mes.' },
+                    { question: '¿Qué es el Dinero?', options: ['Un medio de cambio aceptado de forma generalizada para pagar bienes y servicios', 'Solo monedas de oro', 'Tarjetas de plástico únicamente', 'Hojas de árboles'], correct: 0, explanation: 'Facilita el comercio superando las limitaciones del trueque.' }
                 ]
             }
         ];
 
-        /* CATÁLOGO DE LOGROS / INSIGNIAS */
+        /* CATÁLOGO DE LOGROS / INSIGNIAS (AMPLIADO Y CORREGIDO) */
         const ACHIEVEMENTS_DATA = [
-            { id: 'first_quiz', name: 'Primera actividad', icon: 'sparkles', desc: 'Completa tu primer cuestionario evaluativo.' },
-            { id: 'quiz_5', name: 'Estudiante Constante', icon: 'book-open', desc: 'Resuelve exitosamente 5 cuestionarios.' },
-            { id: 'math_master', name: 'Maestro de Matemáticas', icon: 'calculator', desc: 'Obtén puntaje perfecto en el quiz de Matemáticas.' },
-            { id: 'science_explorer', name: 'Explorador Científico', icon: 'microscope', desc: 'Completa las actividades de Ciencias Naturales.' },
-            { id: 'streak_7', name: 'Racha Imparable', icon: 'flame', desc: 'Mantén una racha de estudio activa.' },
-            { id: 'perfectionist', name: 'Perfeccionista', icon: 'award', desc: 'Obtén 100% de calificación en cualquier prueba.' }
+            { id: 'first_quiz', name: 'Primera Actividad', icon: 'sparkles', desc: 'Completa tu primer cuestionario evaluativo.', requirement: 'Completa 1 materia' },
+            { id: 'quiz_5', name: 'Estudiante Constante', icon: 'book-open', desc: 'Resuelve exitosamente 5 cuestionarios.', requirement: 'Completa 5 materias' },
+            { id: 'all_subjects', name: 'Dominio de Séptimo', icon: 'award', desc: 'Completa las 13 materias de grado séptimo.', requirement: 'Completa las 13 materias' },
+            { id: 'math_master', name: 'Maestro de Matemáticas', icon: 'calculator', desc: 'Obtén puntaje perfecto en el quiz de Matemáticas.', requirement: '100% en Matemáticas' },
+            { id: 'science_explorer', name: 'Explorador Científico', icon: 'microscope', desc: 'Completa la evaluación de Ciencias Naturales con alto puntaje.', requirement: '≥70% en Ciencias' },
+            { id: 'streak_7', name: 'Racha Imparable', icon: 'flame', desc: 'Mantén una racha de estudio de al menos 3 días.', requirement: 'Racha de 3 días' },
+            { id: 'perfectionist', name: 'Perfeccionista', icon: 'check-circle-2', desc: 'Obtén 100% de calificación en cualquier prueba.', requirement: '100% en 1 prueba' },
+            { id: 'profile_ready', name: 'Perfil Personalizado', icon: 'user', desc: 'Adjunta o cambia tu foto de perfil de estudiante.', requirement: 'Subir foto de perfil' }
         ];
 
         /* ESTADO DE LA APLICACIÓN (STATE) CON PERSISTENCIA */
@@ -788,8 +991,10 @@
             remember: false,
             points: 0,
             streak: 1,
+            profileImage: null, // Guardará la URL o Base64 de la foto de perfil
             completedQuizzes: {}, // { subjectId: scorePercentage }
-            unlockedBadges: [],
+            unlockedBadges: [], // Array de IDs de insignias desbloqueadas
+            unlockedDates: {}, // { badgeId: ISO String Date }
             settings: {
                 darkMode: false,
                 animations: true
@@ -811,7 +1016,6 @@
             initTheme();
             renderSubjects();
             renderActivities();
-            renderAchievements();
 
             if (state.user) {
                 showAppLayout();
@@ -819,13 +1023,12 @@
                 showLoginScreen();
             }
 
-            // Inicializar iconos de Lucide
             lucide.createIcons();
         });
 
-        /* MANEJO DE STORAGE LOCAL */
+        /* STORAGE LOCAL */
         function loadState() {
-            const saved = localStorage.getItem('aula7_state');
+            const saved = localStorage.getItem('aula7_state_v2');
             if (saved) {
                 try {
                     state = { ...state, ...JSON.parse(saved) };
@@ -834,11 +1037,11 @@
         }
 
         function saveState() {
-            localStorage.setItem('aula7_state', JSON.stringify(state));
+            localStorage.setItem('aula7_state_v2', JSON.stringify(state));
             updateUIHeaderAndMetrics();
         }
 
-        /* MANEJO DE AUTENTICACIÓN DEMO */
+        /* MANEJO DE AUTENTICACIÓN */
         function handleLogin(e) {
             e.preventDefault();
             const userInput = document.getElementById('usernameInput').value.trim();
@@ -864,7 +1067,7 @@
         function handleLogout() {
             state.user = null;
             if (!state.remember) {
-                localStorage.removeItem('aula7_state');
+                localStorage.removeItem('aula7_state_v2');
             } else {
                 saveState();
             }
@@ -884,33 +1087,29 @@
             navigateTo('dashboard');
         }
 
+        /* NAVEGACIÓN ENTRE VISTAS */
         function navigateTo(viewId, param = null) {
-            // Ocultar todas las secciones
             const views = ['dashboard', 'subjects', 'subject-detail', 'activities', 'quiz', 'quiz-results', 'progress', 'achievements', 'profile', 'settings'];
             views.forEach(v => {
                 const el = document.getElementById(`view-${v}`);
                 if (el) el.classList.add('hidden');
             });
 
-            // Remover clase activa de los botones de navegación
             document.querySelectorAll('.nav-btn').forEach(btn => {
                 btn.classList.remove('bg-indigo-50', 'text-indigo-600', 'dark:bg-indigo-950/60', 'dark:text-indigo-400');
             });
 
-            // Activar botón correspondiente
             const activeNavBtn = document.getElementById(`nav-${viewId}`);
             if (activeNavBtn) {
                 activeNavBtn.classList.add('bg-indigo-50', 'text-indigo-600', 'dark:bg-indigo-950/60', 'dark:text-indigo-400');
             }
 
-            // Mostrar la vista seleccionada
             const targetView = document.getElementById(`view-${viewId}`);
             if (targetView) targetView.classList.remove('hidden');
 
-            // Actualizar título en Header
             const titleMap = {
                 'dashboard': 'Inicio',
-                'subjects': 'Mis Materias',
+                'subjects': 'Mis 13 Materias',
                 'subject-detail': 'Detalle de Materia',
                 'activities': 'Actividades y Cuestionarios',
                 'quiz': 'Evaluación en curso',
@@ -922,20 +1121,19 @@
             };
             document.getElementById('pageTitle').textContent = titleMap[viewId] || 'Aula 7';
 
-            // Cerrar menú móvil si está abierto
             closeMobileMenu();
 
-            // Cargas específicas por vista
             if (viewId === 'subject-detail' && param) loadSubjectDetail(param);
             if (viewId === 'progress') updateProgressView();
+            if (viewId === 'achievements') renderAchievements(); // Asegura el renderizado correcto
             if (viewId === 'profile') updateProfileView();
             
             window.scrollTo({ top: 0, behavior: 'smooth' });
             lucide.createIcons();
         }
 
-        /* RENDERIZADO DE MATERIAS */
-        function renderSubjects() {
+        /* RENDERIZADO DE MATERIAS & FILTRADO */
+        function renderSubjects(filteredList = null) {
             const dashGrid = document.getElementById('dashSubjectsGrid');
             const fullGrid = document.getElementById('subjectsFullGrid');
 
@@ -944,10 +1142,11 @@
             dashGrid.innerHTML = '';
             fullGrid.innerHTML = '';
 
-            SUBJECTS_DATA.forEach((subj, idx) => {
+            const listToRender = filteredList || SUBJECTS_DATA;
+
+            listToRender.forEach((subj, idx) => {
                 const prog = state.completedQuizzes[subj.id] || 0;
 
-                // Template para Tarjeta de Materia
                 const cardHTML = `
                     <div class="bg-white dark:bg-slate-800 p-5 rounded-3xl border border-slate-100 dark:border-slate-700/60 shadow-sm hover:shadow-md transition flex flex-col justify-between space-y-4">
                         <div class="space-y-3">
@@ -976,8 +1175,16 @@
                 `;
 
                 fullGrid.innerHTML += cardHTML;
-                if (idx < 4) dashGrid.innerHTML += cardHTML;
+                if (!filteredList && idx < 4) dashGrid.innerHTML += cardHTML;
             });
+
+            lucide.createIcons();
+        }
+
+        function filterSubjects() {
+            const query = document.getElementById('searchSubjectInput').value.toLowerCase().trim();
+            const filtered = SUBJECTS_DATA.filter(s => s.name.toLowerCase().includes(query) || s.description.toLowerCase().includes(query));
+            renderSubjects(filtered);
         }
 
         /* DETALLE DE MATERIA */
@@ -994,13 +1201,13 @@
                             <i data-lucide="${subj.icon}" class="w-8 h-8"></i>
                         </div>
                         <div>
-                            <span class="text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">Asignatura</span>
+                            <span class="text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">Asignatura (10 Preguntas)</span>
                             <h2 class="text-2xl font-extrabold text-slate-900 dark:text-white">${subj.name}</h2>
                             <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">${subj.description}</p>
                         </div>
                     </div>
                     <button onclick="startQuiz('${subj.id}')" class="w-full sm:w-auto px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-md transition flex items-center justify-center gap-2 text-sm">
-                        <i data-lucide="play" class="w-4 h-4 fill-current"></i> Realizar Cuestionario
+                        <i data-lucide="play" class="w-4 h-4 fill-current"></i> Iniciar Prueba Randomizada
                     </button>
                 </div>
             `;
@@ -1022,6 +1229,7 @@
             lucide.createIcons();
         }
 
+        /* ACTIVIDADES */
         function renderActivities() {
             const grid = document.getElementById('activitiesGrid');
             const dashPending = document.getElementById('dashPendingActivities');
@@ -1030,7 +1238,9 @@
             grid.innerHTML = '';
             if (dashPending) dashPending.innerHTML = '';
 
-            SUBJECTS_DATA.forEach((subj, idx) => {
+            let pendingCount = 0;
+
+            SUBJECTS_DATA.forEach((subj) => {
                 const isCompleted = state.completedQuizzes[subj.id] !== undefined;
                 const score = state.completedQuizzes[subj.id] || 0;
 
@@ -1041,10 +1251,10 @@
                                 <span class="px-2.5 py-1 text-xs font-bold rounded-full ${isCompleted ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-400' : 'bg-amber-100 text-amber-700 dark:bg-amber-950/60 dark:text-amber-400'}">
                                     ${isCompleted ? 'Completado (' + score + '%)' : 'Pendiente'}
                                 </span>
-                                <span class="text-xs text-slate-400 font-medium">${subj.questions.length} Preguntas</span>
+                                <span class="text-xs text-slate-400 font-medium">10 Preguntas</span>
                             </div>
                             <h4 class="font-bold text-slate-900 dark:text-white text-base">Cuestionario: ${subj.name}</h4>
-                            <p class="text-xs text-slate-500 dark:text-slate-400">Ponte a prueba en los contenidos vistos de ${subj.name.toLowerCase()}.</p>
+                            <p class="text-xs text-slate-500 dark:text-slate-400">Ponte a prueba con preguntas aleatorizadas de ${subj.name.toLowerCase()}.</p>
                         </div>
                         <button onclick="startQuiz('${subj.id}')" class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl text-xs transition flex items-center justify-center gap-1.5">
                             <i data-lucide="file-check" class="w-4 h-4"></i>
@@ -1055,12 +1265,13 @@
 
                 grid.innerHTML += actCard;
 
-                if (dashPending && !isCompleted && idx < 3) {
+                if (dashPending && !isCompleted && pendingCount < 3) {
+                    pendingCount++;
                     dashPending.innerHTML += `
                         <div class="p-3 bg-slate-50 dark:bg-slate-900/50 rounded-2xl border border-slate-100 dark:border-slate-800 flex items-center justify-between">
                             <div>
                                 <h5 class="font-bold text-slate-800 dark:text-white text-xs">${subj.name}</h5>
-                                <span class="text-[10px] text-slate-400">Sin realizar</span>
+                                <span class="text-[10px] text-slate-400">10 Preguntas pendientes</span>
                             </div>
                             <button onclick="startQuiz('${subj.id}')" class="px-3 py-1.5 bg-indigo-600 text-white text-xs font-bold rounded-lg hover:bg-indigo-700 transition">
                                 Resolver
@@ -1070,18 +1281,43 @@
                 }
             });
 
-            if (dashPending && dashPending.children.length === 0) {
-                dashPending.innerHTML = `<p class="text-xs text-emerald-600 dark:text-emerald-400 font-semibold text-center py-2">🎉 ¡Has completado todas las actividades disponibles!</p>`;
+            if (dashPending && pendingCount === 0) {
+                dashPending.innerHTML = `<p class="text-xs text-emerald-600 dark:text-emerald-400 font-semibold text-center py-2">🎉 ¡Has completado todas las 13 materias disponibles!</p>`;
             }
+
+            lucide.createIcons();
+        }
+
+        /* SISTEMA DE QUIZ RANDOMIZADO */
+        function shuffleArray(array) {
+            const arr = [...array];
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
         }
 
         function startQuiz(subjId) {
             const subj = SUBJECTS_DATA.find(s => s.id === subjId);
             if (!subj || !subj.questions.length) return;
 
+            // Clonar y aleatorizar el orden de las preguntas
+            const randomizedQuestions = shuffleArray(subj.questions).map(q => {
+                // Clonar y aleatorizar las opciones para cada pregunta
+                const indexedOptions = q.options.map((opt, i) => ({ text: opt, isCorrect: i === q.correct }));
+                const shuffledOpts = shuffleArray(indexedOptions);
+                return {
+                    question: q.question,
+                    options: shuffledOpts.map(o => o.text),
+                    correct: shuffledOpts.findIndex(o => o.isCorrect),
+                    explanation: q.explanation
+                };
+            });
+
             activeQuiz = {
                 subjectId: subj.id,
-                questions: subj.questions,
+                questions: randomizedQuestions,
                 currentIndex: 0,
                 scorePoints: 0,
                 correctCount: 0,
@@ -1089,7 +1325,7 @@
             };
 
             document.getElementById('quizSubjectBadge').textContent = subj.name;
-            document.getElementById('quizTotalIndex').textContent = subj.questions.length;
+            document.getElementById('quizTotalIndex').textContent = randomizedQuestions.length;
 
             renderQuestion();
             navigateTo('quiz');
@@ -1105,18 +1341,15 @@
 
             document.getElementById('quizQuestionText').textContent = q.question;
 
-            // Ocultar feedback previo
             const feedbackBox = document.getElementById('quizFeedbackBox');
             feedbackBox.classList.add('hidden');
 
-            // Resetear botón Siguiente
             const nextBtn = document.getElementById('quizNextBtn');
             nextBtn.disabled = true;
             nextBtn.classList.add('opacity-50', 'cursor-not-allowed');
 
             activeQuiz.selectedAnswer = null;
 
-            // Render opciones
             const container = document.getElementById('quizOptionsContainer');
             container.innerHTML = '';
 
@@ -1131,13 +1364,12 @@
         }
 
         function selectAnswer(optIdx) {
-            if (activeQuiz.selectedAnswer !== null) return; // Evitar selección múltiple
+            if (activeQuiz.selectedAnswer !== null) return;
 
             activeQuiz.selectedAnswer = optIdx;
             const q = activeQuiz.questions[activeQuiz.currentIndex];
             const isCorrect = optIdx === q.correct;
 
-            // Estilar botones de opción
             q.options.forEach((_, idx) => {
                 const btn = document.getElementById(`opt-btn-${idx}`);
                 btn.disabled = true;
@@ -1150,7 +1382,6 @@
                 }
             });
 
-            // Mostrar Feedback pedagógico
             const feedbackBox = document.getElementById('quizFeedbackBox');
             const feedbackHeader = document.getElementById('quizFeedbackHeader');
             const feedbackBody = document.getElementById('quizFeedbackBody');
@@ -1169,7 +1400,6 @@
 
             feedbackBody.textContent = q.explanation;
 
-            // Habilitar botón Siguiente
             const nextBtn = document.getElementById('quizNextBtn');
             nextBtn.disabled = false;
             nextBtn.classList.remove('opacity-50', 'cursor-not-allowed');
@@ -1190,17 +1420,14 @@
             const totalQ = activeQuiz.questions.length;
             const scorePct = Math.round((activeQuiz.correctCount / totalQ) * 100);
 
-            // Guardar progreso de materia
             state.completedQuizzes[activeQuiz.subjectId] = Math.max(state.completedQuizzes[activeQuiz.subjectId] || 0, scorePct);
             state.points += activeQuiz.scorePoints;
 
-            // Evaluar Logros
             checkAchievements(scorePct, activeQuiz.subjectId);
 
             saveState();
             renderActivities();
 
-            // Renderizar vista resultados
             document.getElementById('resScore').textContent = `${scorePct}%`;
             document.getElementById('resPoints').textContent = `+${activeQuiz.scorePoints} pts`;
 
@@ -1213,31 +1440,29 @@
             }
         }
 
+        /* LOGROS E INSIGNIAS (CORREGIDO COMPLETAMENTE) */
         function checkAchievements(lastScore, subjId) {
             let newlyUnlocked = false;
 
             const unlock = (badgeId) => {
                 if (!state.unlockedBadges.includes(badgeId)) {
                     state.unlockedBadges.push(badgeId);
+                    state.unlockedDates[badgeId] = new Date().toLocaleDateString('es-ES', { day: 'numeric', month: 'short' });
                     newlyUnlocked = true;
-                    showToast(`🏆 ¡Logro desbloqueado! Checkea tus medallas.`, 'success');
+                    showToast(`🏆 ¡Logro desbloqueado! Revisa la pestaña Logros.`, 'success');
                 }
             };
 
-            // 1. Primera actividad
-            if (Object.keys(state.completedQuizzes).length >= 1) unlock('first_quiz');
+            const completedCount = Object.keys(state.completedQuizzes).length;
 
-            // 2. 5 actividades completadas
-            if (Object.keys(state.completedQuizzes).length >= 5) unlock('quiz_5');
-
-            // 3. Maestro de matemáticas
+            if (completedCount >= 1) unlock('first_quiz');
+            if (completedCount >= 5) unlock('quiz_5');
+            if (completedCount >= 13) unlock('all_subjects');
             if (subjId === 'math' && lastScore === 100) unlock('math_master');
-
-            // 4. Explorador científico
             if (subjId === 'science' && lastScore >= 70) unlock('science_explorer');
-
-            // 5. Perfeccionista
+            if (state.streak >= 3) unlock('streak_7');
             if (lastScore === 100) unlock('perfectionist');
+            if (state.profileImage) unlock('profile_ready');
 
             const badgeBanner = document.getElementById('resBadgeUnlocked');
             if (badgeBanner) {
@@ -1245,51 +1470,41 @@
             }
         }
 
-        function updateUIHeaderAndMetrics() {
-            // Header
-            document.getElementById('headerStreak').textContent = `${state.streak}d`;
-            document.getElementById('headerPoints').textContent = `${state.points} pts`;
-            const name = state.user ? state.user.name : 'Estudiante';
-            document.getElementById('headerStudentName').textContent = name;
-            document.getElementById('dashStudentName').textContent = name;
-
-            // Calcular Progreso Global
-            const totalSubjs = SUBJECTS_DATA.length;
-            const completedKeys = Object.keys(state.completedQuizzes);
-            const sumScores = completedKeys.reduce((acc, k) => acc + state.completedQuizzes[k], 0);
-            const globalPct = totalSubjs > 0 ? Math.round(sumScores / totalSubjs) : 0;
-
-            document.getElementById('dashGlobalProgress').textContent = `${globalPct}%`;
-            document.getElementById('dashCompletedCount').textContent = `${completedKeys.length}/${totalSubjs}`;
-            document.getElementById('dashTotalPoints').textContent = state.points;
-            document.getElementById('dashAchievementsCount').textContent = `${state.unlockedBadges.length}/${ACHIEVEMENTS_DATA.length}`;
-
-            renderSubjects();
-            renderRecentBadges();
-        }
-
         function renderAchievements() {
             const grid = document.getElementById('achievementsListGrid');
+            const summaryText = document.getElementById('achievementsSummaryText');
             if (!grid) return;
 
             grid.innerHTML = '';
+            
+            if (summaryText) {
+                summaryText.textContent = `${state.unlockedBadges.length} / ${ACHIEVEMENTS_DATA.length} Desbloqueados`;
+            }
+
             ACHIEVEMENTS_DATA.forEach(ach => {
                 const isUnlocked = state.unlockedBadges.includes(ach.id);
+                const dateText = state.unlockedDates[ach.id] || 'Desbloqueado';
+
                 grid.innerHTML += `
-                    <div class="p-5 rounded-3xl border ${isUnlocked ? 'bg-white dark:bg-slate-800 border-indigo-200 dark:border-indigo-800/60 shadow-sm' : 'bg-slate-100/50 dark:bg-slate-800/30 border-slate-200 dark:border-slate-800 opacity-60'} flex items-start gap-4">
-                        <div class="p-3.5 rounded-2xl ${isUnlocked ? 'bg-amber-100 text-amber-600 dark:bg-amber-950/60 dark:text-amber-400' : 'bg-slate-200 text-slate-400 dark:bg-slate-700'}">
+                    <div class="p-5 rounded-3xl border transition ${isUnlocked ? 'bg-white dark:bg-slate-800 border-indigo-200 dark:border-indigo-800/60 shadow-sm' : 'bg-slate-100/50 dark:bg-slate-800/30 border-slate-200 dark:border-slate-800 opacity-60'} flex items-start gap-4">
+                        <div class="p-3.5 rounded-2xl shrink-0 ${isUnlocked ? 'bg-amber-100 text-amber-600 dark:bg-amber-950/60 dark:text-amber-400' : 'bg-slate-200 text-slate-400 dark:bg-slate-700'}">
                             <i data-lucide="${ach.icon}" class="w-7 h-7"></i>
                         </div>
-                        <div class="space-y-1">
-                            <div class="flex items-center gap-2">
+                        <div class="space-y-1 flex-1">
+                            <div class="flex items-center justify-between gap-2">
                                 <h4 class="font-bold text-slate-900 dark:text-white text-sm">${ach.name}</h4>
-                                ${isUnlocked ? '<span class="text-[10px] font-bold px-2 py-0.5 bg-emerald-100 text-emerald-700 dark:bg-emerald-950/80 dark:text-emerald-300 rounded-full">Desbloqueado</span>' : ''}
+                                ${isUnlocked 
+                                    ? `<span class="text-[10px] font-bold px-2 py-0.5 bg-emerald-100 text-emerald-700 dark:bg-emerald-950/80 dark:text-emerald-300 rounded-full">${dateText}</span>` 
+                                    : `<span class="text-[10px] font-medium px-2 py-0.5 bg-slate-200 text-slate-600 dark:bg-slate-700 dark:text-slate-400 rounded-full">Bloqueado</span>`}
                             </div>
                             <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">${ach.desc}</p>
+                            <span class="block text-[11px] font-semibold text-indigo-600 dark:text-indigo-400 mt-1">Requisito: ${ach.requirement}</span>
                         </div>
                     </div>
                 `;
             });
+
+            lucide.createIcons();
         }
 
         function renderRecentBadges() {
@@ -1298,7 +1513,7 @@
 
             container.innerHTML = '';
             if (state.unlockedBadges.length === 0) {
-                container.innerHTML = `<p class="text-xs text-slate-400 italic">Aún no has desbloqueado ningún logro. ¡Completa cuestionarios para ganar insignias!</p>`;
+                container.innerHTML = `<p class="text-xs text-slate-400 italic">Aún no has desbloqueado ningún logro. ¡Resuelve cuestionarios para ganar insignias!</p>`;
                 return;
             }
 
@@ -1316,6 +1531,101 @@
             lucide.createIcons();
         }
 
+        /* PERFIL & ADJUNTAR FOTO */
+        function handleProfileImageUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            if (file.size > 3 * 1024 * 1024) {
+                showToast('La imagen debe ser menor a 3MB', 'error');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                state.profileImage = e.target.result;
+                checkAchievements(0, '');
+                saveState();
+                updateProfileView();
+                showToast('¡Foto de perfil actualizada!', 'success');
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function setPresetAvatar(url) {
+            state.profileImage = url;
+            checkAchievements(0, '');
+            saveState();
+            updateProfileView();
+            showToast('Avatar actualizado correctamente', 'success');
+        }
+
+        function removeProfileImage() {
+            state.profileImage = null;
+            saveState();
+            updateProfileView();
+            showToast('Foto de perfil eliminada', 'info');
+        }
+
+        function updateProfileView() {
+            const name = state.user ? state.user.name : 'Estudiante Demo';
+            document.getElementById('profileName').textContent = name;
+            document.getElementById('profilePoints').textContent = state.points;
+            document.getElementById('profileStreak').textContent = `${state.streak} días`;
+            document.getElementById('profileBadges').textContent = `${state.unlockedBadges.length}/${ACHIEVEMENTS_DATA.length}`;
+            
+            const level = Math.floor(state.points / 300) + 1;
+            document.getElementById('profileLevel').textContent = `Nivel ${level}`;
+
+            // Actualizar fotos/avatares
+            const headerAvatar = document.getElementById('headerAvatarContainer');
+            const bigAvatar = document.getElementById('profileBigAvatar');
+
+            if (state.profileImage) {
+                headerAvatar.innerHTML = `<img src="${state.profileImage}" class="w-full h-full object-cover">`;
+                bigAvatar.innerHTML = `<img src="${state.profileImage}" class="w-full h-full object-cover">`;
+            } else {
+                const initials = name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+                headerAvatar.innerHTML = `<span id="headerAvatarText">${initials}</span>`;
+                bigAvatar.innerHTML = `<span id="profileBigAvatarText">${initials}</span>`;
+            }
+        }
+
+        function updateNickname() {
+            const input = document.getElementById('nicknameInput');
+            if (input && input.value.trim()) {
+                if (!state.user) state.user = {};
+                state.user.name = input.value.trim();
+                saveState();
+                updateProfileView();
+                showToast('Nombre actualizado correctamente', 'success');
+                input.value = '';
+            }
+        }
+
+        /* METRICAS E INTERFAZ GLOBAL */
+        function updateUIHeaderAndMetrics() {
+            document.getElementById('headerStreak').textContent = `${state.streak}d`;
+            document.getElementById('headerPoints').textContent = `${state.points} pts`;
+            const name = state.user ? state.user.name : 'Estudiante';
+            document.getElementById('headerStudentName').textContent = name;
+            document.getElementById('dashStudentName').textContent = name;
+
+            const totalSubjs = SUBJECTS_DATA.length;
+            const completedKeys = Object.keys(state.completedQuizzes);
+            const sumScores = completedKeys.reduce((acc, k) => acc + state.completedQuizzes[k], 0);
+            const globalPct = totalSubjs > 0 ? Math.round(sumScores / totalSubjs) : 0;
+
+            document.getElementById('dashGlobalProgress').textContent = `${globalPct}%`;
+            document.getElementById('dashCompletedCount').textContent = `${completedKeys.length}/${totalSubjs}`;
+            document.getElementById('dashTotalPoints').textContent = state.points;
+            document.getElementById('dashAchievementsCount').textContent = `${state.unlockedBadges.length}/${ACHIEVEMENTS_DATA.length}`;
+
+            updateProfileView();
+            renderSubjects();
+            renderRecentBadges();
+        }
+
         function updateProgressView() {
             const totalSubjs = SUBJECTS_DATA.length;
             const completedKeys = Object.keys(state.completedQuizzes);
@@ -1324,9 +1634,9 @@
 
             document.getElementById('progGlobalText').textContent = `${globalPct}%`;
             document.getElementById('progGlobalBar').style.width = `${globalPct}%`;
-            document.getElementById('progTotalQuizzes').textContent = completedKeys.length;
+            document.getElementById('progTotalQuizzes').textContent = `${completedKeys.length}/${totalSubjs}`;
             document.getElementById('progPassedQuizzes').textContent = completedKeys.filter(k => state.completedQuizzes[k] >= 60).length;
-            document.getElementById('progAvgPoints').textContent = state.points > 0 ? Math.round(state.points / (completedKeys.length || 1)) : 0;
+            document.getElementById('progAvgPoints').textContent = state.points;
 
             const grid = document.getElementById('progressSubjectsGrid');
             grid.innerHTML = '';
@@ -1347,29 +1657,7 @@
             });
         }
 
-        function updateProfileView() {
-            const name = state.user ? state.user.name : 'Estudiante Demo';
-            document.getElementById('profileName').textContent = name;
-            document.getElementById('profilePoints').textContent = state.points;
-            document.getElementById('profileStreak').textContent = `${state.streak} días`;
-            document.getElementById('profileBadges').textContent = `${state.unlockedBadges.length}/${ACHIEVEMENTS_DATA.length}`;
-            
-            const level = Math.floor(state.points / 300) + 1;
-            document.getElementById('profileLevel').textContent = `Nivel ${level}`;
-        }
-
-        function updateNickname() {
-            const input = document.getElementById('nicknameInput');
-            if (input && input.value.trim()) {
-                if (!state.user) state.user = {};
-                state.user.name = input.value.trim();
-                saveState();
-                updateProfileView();
-                showToast('Nombre actualizado correctamente', 'success');
-                input.value = '';
-            }
-        }
-
+        /* AJUSTES Y MODO OSCURO */
         function initTheme() {
             if (state.settings.darkMode) {
                 document.documentElement.classList.add('dark');
@@ -1428,13 +1716,14 @@
             state.points = 0;
             state.completedQuizzes = {};
             state.unlockedBadges = [];
+            state.unlockedDates = {};
             saveState();
             closeResetModal();
             updateUIHeaderAndMetrics();
             showToast('El progreso ha sido reiniciado por completo.', 'info');
         }
 
-        /* SISTEMA DE NOTIFICACIONES TOAST */
+        /* NOTIFICACIONES TOAST */
         function showToast(message, type = 'info') {
             const container = document.getElementById('toastContainer');
             if (!container) return;
